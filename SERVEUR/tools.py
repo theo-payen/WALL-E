@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from log import LOG
+from logging import Logging
 import threading
 
 # pas de copier coller bêtement
@@ -8,10 +8,10 @@ import threading
 # dev a l'interieur du if __main__
 # pour pas géné l'autre partie du code
 class TOOLS():
-    def __init__(self,FILE_LOG) :
+    def __init__(self) :
         
-        self.FILE_LOG = FILE_LOG
-        self.LOG(FILE_LOG)
+        self.FILE_LOG = "Folder_log\server.log"
+        self.LOG(self.FILE_LOG)
         self.LOG.initialise_log()
         
         pass
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     #
     # LES TESTS
     #
-    boite_a_outils = TOOLS("Folder_log\tools.py")
+    boite_a_outils = TOOLS()
 
     IP = "192.168.1.1"
     boite_a_outils.TestConnection(IP)

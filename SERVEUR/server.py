@@ -1,23 +1,27 @@
 #!/usr/bin/python
 from SQL import SQL
 from tools import TOOLS
-import socket, os, logging
+from logging import Logging
+import socket, os
 # TODO mettre en place les try
 # TODO commanter le code
 # TODO FINALISER LA CLASS
 class Serveur():
 	def __init__(self,IP,PORT):
 		self.IP = IP
+		
 		self.PORT = PORT
+		print (self.IP, self.PORT)
 		self.ID_client = 0
 		self.infosocket = {"ID":[],"SOCKET":[]}
+		#
+		#log
+		#
+		self.FILE_LOG = "Folder_log/server.log"
+		self.logging = Logging(self.FILE_LOG)
+		
+		self.logging.info("Serveur start")
 
-	def initialise_log(self,FILE_LOG) :
-		self.FILE_LOG = FILE_LOG
-		self.Log_Format = "%(levelname)s %(asctime)s - %(message)s"
-		logging.basicConfig(filename = self.FILE_LOG,filemode = "a",format = self.Log_Format)
-		self.logger = logging.getLogger()
-		self.logger.info("cc")
 
 	def initialise_sql(self,DATA_BASE):
 		self.DATA_BASE = DATA_BASE

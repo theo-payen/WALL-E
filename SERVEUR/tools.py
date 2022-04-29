@@ -1,12 +1,19 @@
 #!/usr/bin/python
+from log import LOG
 import threading
+
 # pas de copier coller bêtement
 # s'avoir expliqué votre code
 # commanté les grande partie de votre code
 # dev a l'interieur du if __main__
 # pour pas géné l'autre partie du code
 class TOOLS():
-    def __init__(self) :
+    def __init__(self,FILE_LOG) :
+        
+        self.FILE_LOG = FILE_LOG
+        self.LOG(FILE_LOG)
+        self.LOG.initialise_log()
+        
         pass
     def export_CSV(self):
         pass
@@ -34,7 +41,7 @@ if __name__ == '__main__':
     #
     # LES TESTS
     #
-    boite_a_outils = TOOLS()
+    boite_a_outils = TOOLS("Folder_log\tools.py")
 
     IP = "192.168.1.1"
     boite_a_outils.TestConnection(IP)

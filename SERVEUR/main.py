@@ -17,7 +17,7 @@ threadsClients = []
 while True:
 	SERVER.accept()
 
-	threadsClients.append(threading.Thread(None, SERVER.instanceServeur, None, (SERVER.client, SERVER.infosClient, SERVER.server), {}))
+	threadsClients.append(threading.Thread(None, SERVER.threading, None, (SERVER.client, SERVER.infosClient, SERVER.server), {}))
 	threadsClients[-1].start()
 
 

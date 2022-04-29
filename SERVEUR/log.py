@@ -1,10 +1,26 @@
+#!/usr/bin/python
 import logging
 class LOG():
     def __init__(self,FILE_LOG):
         self.FILE_LOG = FILE_LOG
 
-    def start_log(self):
-            self.Log_Format = "%(levelname)s %(asctime)s - %(message)s"
-            logging.basicConfig(filename = self.FILE_LOG,filemode = "a",format = self.Log_Format)
-            self.logger = logging.getLogger()
-            # info : debug : info : warning : error : critical 
+    def initialise_log(self):
+        self.logging.basicConfig(
+            filename=self.FILE_LOG,
+            level=logging.DEBUG,\
+            format='%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s'
+        )
+
+
+
+
+
+"""
+exemple log :
+
+LOG.logging.debug('Debug error')
+LOG.logging.info('INFO ERROR')
+LOG.logging.warning('Warning Error %s: %s', '01234', 'Erreur Oracle')
+LOG.logging.error('error message')
+LOG.logging.critical('critical error')
+"""

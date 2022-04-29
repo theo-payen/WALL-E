@@ -71,7 +71,7 @@ class Serveur():
 	def close(self):
 		self.client.close()
 	
-	def instanceServeur (self,client, infosClient, server):   
+	def threading (self,client, infosClient, server):   
 		
 		self.logger.info("START threadsClients for client" + infosClient[0] + str(infosClient[1]))
 

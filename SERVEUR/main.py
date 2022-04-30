@@ -1,16 +1,15 @@
 #!/usr/bin/python
 from server import Serveur
-import threading, os
+import threading
 
 IP = "localhost"
 PORT = 3400
 DATA_BASE = "DataBase.db"
 
 SERVER = Serveur(IP,PORT)
-
-
 SERVER.initialise_sql(DATA_BASE)
 SERVER.start()
+
 threadsClients = []
 
 while True:
@@ -19,7 +18,4 @@ while True:
 	threadsClients[-1].start()
 
 
-#fichier.close()
 #serveur.close()
-
-os.pause()

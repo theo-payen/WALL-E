@@ -8,18 +8,16 @@ import socket, os
 # TODO FINALISER LA CLASS
 class Serveur():
 	def __init__(self,IP,PORT):
-		self.IP = IP
 		
+		self.IP = IP
 		self.PORT = PORT
-		print (self.IP, self.PORT)
+
 		self.ID_client = 0
 		self.infosocket = {"ID":[],"SOCKET":[]}
-		#
-		#log
-		#
+
 		self.FILE_LOG = "Folder_log/server.log"
 		self.logging = Logging(self.FILE_LOG)
-		
+
 		self.logging.info("Serveur start")
 
 
@@ -27,7 +25,7 @@ class Serveur():
 		self.DATA_BASE = DATA_BASE
 		self.SQL = SQL(self.DATA_BASE)
 		if self.SQL.Get_file_DB() == False:
-			print ("fichier db crée")
+			self.logging.info("fichier db crée")
 
 	def initialise_tools(self):
 		self.TOOLS = TOOLS()
@@ -38,14 +36,14 @@ class Serveur():
 			self.server.bind((self.IP, self.PORT))
 			self.server.listen(5)
 		except:
-			print("Impossible de démmaré le serveur")
+			self.logging.error("Impossible de démmaré le serveur")
 			os.exit()
 
 	def accept(self):
 		try:
 			self.client,self.infosClient = self.server.accept()
 		except:
-			print("Impossible detablire la connexion avec le client")
+			self.logging.error("Impossible detablire la connexion avec le client")
 		self.ID_client = self.ID_client + 1
 		self.infosocket["ID"].append(self.ID_client)
 		self.infosocket["SOCKET"].append(self.client)
@@ -58,7 +56,7 @@ class Serveur():
 			try:
 				socket.send((msg).encode())
 			except:
-				print ("impossible envoyer le message")
+				self.logging.error("impossible envoyer le message")
 
 	def recv(self):
 		rep = self.client.recv(255)
@@ -70,29 +68,28 @@ class Serveur():
 			msg = msg.encode()
 			self.client.send(msg)
 		except : 
-			print ("impossible d'envoyer un message")
+			self.logging.error("impossible d'envoyer un message")
 
 	def close(self):
 		self.client.close()
 	
 	def threading (self,client, infosClient, server):   
 		
-		self.logger.info("START threadsClients for client" + infosClient[0] + str(infosClient[1]))
+		self.logging.info("START threadsClients for client" + infosClient[0] + str(infosClient[1]))
 
 		adresseIP = infosClient[0]
 		port = str(infosClient[1])
-		print (client,adresseIP, port, server)
-		print (self.SQL.Get_Value("*","ID","*"))
+		self.logging.info(str(client) + str(adresseIP) + str(port) + str(server))
+		self.logging.info(self.SQL.Get_Value("*","ID","*"))
 		
 		if self.recv() == "CONNECTION":
-			print ("CONNECTION")
+			self.logging.info("CONNECTION")
 			# TODO ## test
-			self.logger.info("CONNECTION APPROUVE")
-			#self.open_log.warning("CONNECTION REFUSE")
-			print ("APPROUVE")
+			self.logging.info("CONNECTION APPROUVE")
+			self.logging.info("APPROUVE")
 			self.send("APPROUVE")
 		else:
-			self.logger.warning("CONNECTION REFUSE")
+			self.logging.warning("CONNECTION REFUSE")
 			self.send("REFUSE")
 			self.close()
 		
@@ -111,9 +108,9 @@ class Serveur():
 			ClientMessage = ClientMessage.upper()
 			if admin == True:
 				if ClientMessage == "SERVEUR MAINTENANCE":
-					self.open_log.critical("SERVEUR MAINTENANCE")
+					self.logging.critical("SERVEUR MAINTENANCE")
 					self.All_users("SERVER MAINTENANCE")
-					self.open_log.critical("STOP SERVEUR")
+					self.logging.critical("STOP SERVEUR")
 					self.closeServer()
 					break
 				
@@ -129,7 +126,7 @@ class Serveur():
 
 
 			if ClientMessage == "CLOSE CLIENT":
-				self.open_log.info("STOP CLIENT")
+				self.logging.info("STOP CLIENT")
 				self.close()
 				break
 			elif ClientMessage == "FTP LOGIN":

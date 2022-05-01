@@ -1,5 +1,21 @@
 # WALL-E
-## Project Python
+## Présentation
+Projet dévelloper en python3
 
-#### Liste File
-##### Folder SERVER cc
+## Techno utiliser
+- `thread`
+- `sqllite`
+
+
+
+## Comment fonctionne le script
+Le script est diviser en deux partie une côté `CLIENT` et un autre côté `SERVER` 
+- dans un premier temps executer le script `main.py` qui est dans le dossier `SERVER`
+- puis le script `client.py` qui se trouve dans le dossier `CLIENT`
+
+
+## Autor
+
+- [@Mohamed WAZANE](https://github.com/)
+- [@Maxime HABERMANN](https://github.com/)
+- [@ThéoPAYEN](https://github.com/theo-payen)

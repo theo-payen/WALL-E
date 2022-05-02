@@ -36,7 +36,10 @@ class SQL():
 		self.commit()
 
 	def Get_Value (self,SELECT,WHERE,ID):
-		return (self.QueryCurs.execute("SELECT ? FROM Utilisateur WHERE ? = ?",(SELECT,WHERE,ID,),).fetchall())
+		def User():
+			pass
+		GET = self.QueryCurs.execute("SELECT ? FROM Utilisateur WHERE ?=?",(SELECT,WHERE,ID,),).fetchall()
+		return GET
 
 	def Set_value (self,SET, SET_value, ID):
 		self.QueryCurs.execute("UPDATE Utilisateur SET ? = ? WHERE id = ?",(SET,SET_value,ID,),).fetchall()

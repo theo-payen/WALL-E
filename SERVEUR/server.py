@@ -2,7 +2,7 @@
 from SQL import SQL
 from tools import TOOLS
 from logging import Logging
-import socket, os
+import socket
 # TODO mettre en place les try
 # TODO commanter le code
 # TODO FINALISER LA CLASS
@@ -18,9 +18,6 @@ class Serveur():
 		self.FILE_LOG = "Folder_log/server.log"
 		self.logging = Logging(self.FILE_LOG)
 
-		self.logging.info("Serveur start")
-
-
 	def initialise_sql(self,DATA_BASE):
 		self.DATA_BASE = DATA_BASE
 		self.SQL = SQL(self.DATA_BASE)
@@ -32,21 +29,24 @@ class Serveur():
 
 	def start(self):
 		try:
+			self.logging.info("Serveur start")
 			self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.server.bind((self.IP, self.PORT))
 			self.server.listen(5)
 		except:
 			self.logging.error("Impossible de démmaré le serveur")
-			os.exit()
+			exit
 
 	def accept(self):
 		try:
 			self.client,self.infosClient = self.server.accept()
 		except:
 			self.logging.error("Impossible detablire la connexion avec le client")
-		self.ID_client = self.ID_client + 1
-		self.infosocket["ID"].append(self.ID_client)
-		self.infosocket["SOCKET"].append(self.client)
+			exit
+		else:
+			self.ID_client = self.ID_client + 1
+			self.infosocket["ID"].append(self.ID_client)
+			self.infosocket["SOCKET"].append(self.client)
 
 	def closeServer(self):
 		self.server.close()
@@ -59,9 +59,13 @@ class Serveur():
 				self.logging.error("impossible envoyer le message")
 
 	def recv(self):
-		rep = self.client.recv(255)
-		rep = rep.decode()
-		return rep
+		try:
+			rep = self.client.recv(255)
+			rep = rep.decode()
+			return rep
+		except:
+			self.logging.error("impossible de resevoir le message")
+			self.close()
 
 	def send(self,msg):
 		try:
@@ -69,29 +73,46 @@ class Serveur():
 			self.client.send(msg)
 		except : 
 			self.logging.error("impossible d'envoyer un message")
+			self.close()
 
 	def close(self):
-		self.client.close()
-	
+		try:
+			self.client.close()
+		except:
+			self.logging.error("Impossible de fermer la connection avec le client")
+			exit
+
 	def threading (self,client, infosClient, server):   
 		
-		self.logging.info("START threadsClients for client" + infosClient[0] + str(infosClient[1]))
 
 		adresseIP = infosClient[0]
 		port = str(infosClient[1])
-		self.logging.info(str(client) + str(adresseIP) + str(port) + str(server))
-		self.logging.info(self.SQL.Get_Value("*","ID","*"))
+		self.logging.info("START threadsClients for " + adresseIP + " : " +str(port))
+
+		#self.logging.info(str(client) + str(adresseIP) + str(port) + str(server))
+
+		#self.logging.info(self.SQL.Get_Value("*","ID","*"))
 		
 		if self.recv() == "CONNECTION":
 			self.logging.info("CONNECTION")
 			# TODO ## test
 			self.logging.info("CONNECTION APPROUVE")
-			self.logging.info("APPROUVE")
 			self.send("APPROUVE")
 		else:
 			self.logging.warning("CONNECTION REFUSE")
 			self.send("REFUSE")
 			self.close()
+		
+		MESSAGE = self.recv().split(" ")
+		self.LOGIN = MESSAGE[0]
+		self.PASSWORD = MESSAGE[1]
+		LOGIN_DB = str(self.SQL.QueryCurs.execute("SELECT LOGIN FROM Utilisateur WHERE LOGIN=?",(self.LOGIN,),).fetchall())
+		PASSWORD_DB = str(self.SQL.QueryCurs.execute("SELECT PASSWORD FROM Utilisateur WHERE LOGIN=?",(self.LOGIN,),).fetchall())
+		print (LOGIN_DB,PASSWORD_DB)
+		self.send("login ok")
+		print ("ok")
+
+		self.close()
 		
 		#
 		# connexion a la db 
@@ -101,7 +122,7 @@ class Serveur():
 		# apres connexion
 		#
 		
-
+		"""
 		admin = True
 		while True:
 			ClientMessage = self.recv()
@@ -138,6 +159,7 @@ class Serveur():
 				#print ("error")
 				pass
 		self.close()
+		"""
 
 
 if __name__ == '__main__':

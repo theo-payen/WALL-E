@@ -1,4 +1,4 @@
-import socket , os, threading
+import socket , threading
 # a faire
 # thread ecoute a l'infini et renvoi des information au client
 #
@@ -28,13 +28,18 @@ class CLIENT_TO_SERVER:
 
 
 IP = "localhost"	
-PORT = 3400
+PORT = 3401
 CLIENT_TO_SERVER = CLIENT_TO_SERVER(IP,PORT)
 CLIENT_TO_SERVER.connection()
 CLIENT_TO_SERVER.send("CONNECTION")
-msg = CLIENT_TO_SERVER.recv()
-print (msg)
+if CLIENT_TO_SERVER.recv() == ("APPROUVE"):
+    print ("ok")
+    pass
+else:
+    print ("refusse")
+    exit
 
-
+CLIENT_TO_SERVER.send("root" + " " + "MDP")
+print (CLIENT_TO_SERVER.recv())
 
 CLIENT_TO_SERVER.close()

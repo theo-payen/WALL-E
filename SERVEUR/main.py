@@ -3,7 +3,7 @@ from server import Serveur
 import threading
 
 IP = "localhost"
-PORT = 3400
+PORT = 3401
 DATA_BASE = "DataBase.db"
 
 SERVER = Serveur(IP,PORT)

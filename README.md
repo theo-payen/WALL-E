@@ -19,5 +19,3 @@ Le script est diviser en deux partie une côté `CLIENT` et un autre côté `SER
 - [@Mohamed WAZANE](https://github.com/)
 - [@Maxime HABERMANN](https://github.com/)
 - [@ThéoPAYEN](https://github.com/theo-payen)
-
-tt

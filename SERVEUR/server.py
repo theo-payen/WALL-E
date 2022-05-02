@@ -155,6 +155,7 @@ class Serveur():
 			elif ClientMessage == "CHANGE PASSWORD":
 				pass
 			else:
+
 				# TODO a faie 
 				#print ("error")
 				pass

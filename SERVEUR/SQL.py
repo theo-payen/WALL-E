@@ -48,10 +48,7 @@ class SQL():
 	def Set_value(self,SET,SET_value,ID):
 		self.QueryCurs.execute("UPDATE Utilisateur SET ? = ? WHERE ID = ?",(SET,SET_value,ID,),).fetchall()
 		self.commit()
-
-	def test(self):
-		self.QueryCurs.execute("SELECT * FROM Utilisateur",).fetchall()
-
+	
 
 if __name__ == '__main__':
 	print ("veillez importer le script")

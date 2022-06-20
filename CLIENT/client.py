@@ -74,6 +74,7 @@ while True :
 		print ("t co mon ruf")
 		break
 
+
 print (CLIENT.recv())
 
 CLIENT.close()

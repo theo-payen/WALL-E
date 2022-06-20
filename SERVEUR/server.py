@@ -82,22 +82,27 @@ class Serveur():
 		self.logging.info("START threadsClients for " + adresseIP + " : " +str(port))
 		
 		MESSAGE = self.recv().split(" ")
-		self.LOGIN = MESSAGE[0]
-		self.PASSWORD = MESSAGE[1]
+		self.RECV_LOGIN = MESSAGE[0]
+		self.RECV_PASSWORD = MESSAGE[1]
 		# faire les requet dans bdd
 		
-		self.TEST = self.SQL.Search_LOGIN_and_PASSWORD(self.LOGIN)
-		print (self.TEST)
-		l = self.TEST.split()
-		print (l)
+		self.DATA_USER = str(self.SQL.Search_LOGIN_and_PASSWORD(self.RECV_LOGIN))
+		characters_a_supprimé = "()[]' "
 
-		
-		#print (self.ID,self.LOGIN,self.PASSWORD)
+		for x in range(len(characters_a_supprimé)):
+			self.DATA_USER = self.DATA_USER.replace(characters_a_supprimé[x],"")
+		self.DATA_USER = self.DATA_USER.split(",")
 
-		self.LOGIN_DB = str(self.SQL.Search_LOGIN(self.LOGIN))
-		self.PASSWORD_DB = str(self.SQL.Search_PASSWORD(self.LOGIN))
+		self.ID = self.DATA_USER[0]
+		self.LOGIN = self.DATA_USER[1]
+		self.PASSWORD = self.DATA_USER[2]
+		self.ROLE = self.DATA_USER[3]
+		self.NOM = self.DATA_USER[4]
+		self.PRENOM = self.DATA_USER[5]
+		self.SITE = self.DATA_USER[6]
 
-		if self.LOGIN is None or self.PASSWORD is None or not self.LOGIN in self.LOGIN_DB or not self.PASSWORD in self.PASSWORD_DB:
+		print (self.ID,self.SITE)
+		if self.RECV_LOGIN is None or self.RECV_PASSWORD is None or not self.RECV_LOGIN in self.LOGIN or not self.RECV_PASSWORD in self.PASSWORD:
 			self.send("ERROR_CONNECTION")
 			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
 			self.close()
@@ -105,62 +110,54 @@ class Serveur():
 			self.send("APPROUVE")
 			self.logging.info("CONNECTION APPROUVE FOR " + self.LOGIN)
 			# TODO get les droits
+			
 
+			while True:
+				#send role au client				
+				if self.ROLE == "0":
+					# NON ADMIN
+					USER_MESSAGE_FROM_CLIENT = self.recv().split(" ")
+					
+					pass
+				else:
+					# ADMIN
+					ADM_MESSAGE_FROM_CLIENT = self.recv().split(" ")
 
+					if ADM_MESSAGE_FROM_CLIENT == "SERVEUR MAINTENANCE":
+						self.logging.critical("SERVEUR MAINTENANCE")
+						self.All_users("SERVER MAINTENANCE")
+						self.logging.critical("STOP SERVEUR")
+						self.closeServer()
+						break
+
+					elif ADM_MESSAGE_FROM_CLIENT == "TOOLS":
+						ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS = self.recv()
+						ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS = ADM_MESSAGE_FROM_CLIENT.upper()
+						if ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS == "Brute force":
+							pass
+						elif ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS == "Brute force dico":
+							pass
+						elif ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS == "scan port":
+							pass
+
+					if ADM_MESSAGE_FROM_CLIENT == "CLOSE CLIENT":
+						self.logging.info("STOP CLIENT")
+						self.close()
+						break
+					elif ADM_MESSAGE_FROM_CLIENT == "FTP LOGIN":
+						pass
+					elif ADM_MESSAGE_FROM_CLIENT == "CHANGE PASSWORD":
+						pass
+					else:
+						print ("error")
 
 			self.close()
-		
-		#
-		# connexion a la db 
-		#
-
-		#
-		# apres connexion
-		#
-		
-		"""
-		admin = True
-		while True:
-			ClientMessage = self.recv()
-			ClientMessage = ClientMessage.upper()
-			if admin == True:
-				if ClientMessage == "SERVEUR MAINTENANCE":
-					self.logging.critical("SERVEUR MAINTENANCE")
-					self.All_users("SERVER MAINTENANCE")
-					self.logging.critical("STOP SERVEUR")
-					self.closeServer()
-					break
-				
-				elif ClientMessage == "TOOLS":
-					ClientMessage_for_tools = self.recv()
-					ClientMessage_for_tools = ClientMessage.upper()
-					if ClientMessage_for_tools == "Brute force":
-						pass
-					elif ClientMessage_for_tools == "Brute force dico":
-						pass
-					elif ClientMessage_for_tools == "scan port":
-						pass
 
 
-			if ClientMessage == "CLOSE CLIENT":
-				self.logging.info("STOP CLIENT")
-				self.close()
-				break
-			elif ClientMessage == "FTP LOGIN":
-				pass
-			elif ClientMessage == "CHANGE PASSWORD":
-				pass
-			else:
 
-
-				#print ("error")
-				pass
-		self.close()
-		"""
 
 
 if __name__ == '__main__':
 	print ("veillez importer le script")
 else:
 	print ("Le script Serveur a été importer avec succès")
-	#toto momo test

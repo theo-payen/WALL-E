@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from time import sleep
 from SQL import SQL
 from tools import TOOLS
 from logging import Logging
@@ -100,8 +101,10 @@ class Serveur():
 		MESSAGE = self.recv().split(" ")
 		self.LOGIN = MESSAGE[0]
 		self.PASSWORD = MESSAGE[1]
-		LOGIN_DB = str(self.SQL.QueryCurs.execute("SELECT LOGIN FROM Utilisateur WHERE LOGIN=?",(self.LOGIN,),).fetchall())
-		PASSWORD_DB = str(self.SQL.QueryCurs.execute("SELECT PASSWORD FROM Utilisateur WHERE LOGIN=?",(self.LOGIN,),).fetchall())
+		# faire les requet dans bdd
+		LOGIN_DB = str(self.SQL.Search_LOGIN(self.LOGIN))
+		PASSWORD_DB = str(self.SQL.Search_PASSWORD(self.LOGIN))
+		
 		print (LOGIN_DB,PASSWORD_DB)
 		self.send("login ok")
 		print ("ok")

@@ -763,3 +763,7 @@
 ('06/20/2022 14:46:14', 'ERROR', 'Impossible de démmaré le serveur')
 ('06/20/2022 14:46:14', 'ERROR', 'Impossible detablire la connexion avec le client')
 ('06/20/2022 14:47:16', 'ERROR', 'Impossible detablire la connexion avec le client')
+('06/20/2022 14:50:47', 'INFO', 'Serveur start')
+('06/20/2022 14:50:49', 'INFO', 'START threadsClients for 127.0.0.1 : 52320')
+('06/20/2022 14:50:49', 'INFO', 'CONNECTION')
+('06/20/2022 14:50:49', 'INFO', 'CONNECTION APPROUVE')

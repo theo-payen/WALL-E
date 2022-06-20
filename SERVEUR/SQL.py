@@ -48,20 +48,15 @@ class SQL():
 	
 	# GET VALUE ON TAB Utilisateur
 	def Get_all(self):
-		GET = self.QueryCurs.execute("SELECT * FROM Utilisateur",).fetchall()
-		return GET
+		return self.QueryCurs.execute("SELECT * FROM Utilisateur",).fetchall()
 	def Get_LOGIN(self,ID):
-		GET = self.QueryCurs.execute("SELECT LOGIN FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
-		return GET
+		return self.QueryCurs.execute("SELECT LOGIN FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
 	def Get_PASSWORD(self,ID):
-		GET = self.QueryCurs.execute("SELECT PASSWORD FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
-		return GET
+		return self.QueryCurs.execute("SELECT PASSWORD FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
 	def Get_ROLE(self,ID):
-		GET = self.QueryCurs.execute("SELECT ROLE FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
-		return GET
+		return self.QueryCurs.execute("SELECT ROLE FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
 	def Get_SITE(self,ID):
-		GET = self.QueryCurs.execute("SELECT SITE FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
-		return GET
+		return self.QueryCurs.execute("SELECT SITE FROM Utilisateur WHERE ID=?",(ID,),).fetchall()
 
 	# UPDATE VALUE ON TAB Utilisateur
 	def Update_PASSWORD(self,UPDATE,ID):
@@ -73,6 +68,12 @@ class SQL():
 	def Update_SITE(self,UPDATE,ID):
 		self.QueryCurs.execute("UPDATE Utilisateur SET SITE = ? WHERE ID = ?",(UPDATE,ID,),).fetchall()
 		self.commit()
+
+	# recherche
+	def Search_LOGIN(self,LOGIN):
+		return self.QueryCurs.execute("SELECT LOGIN FROM Utilisateur WHERE LOGIN=?",(LOGIN,),).fetchall()
+	def Search_PASSWORD(self,LOGIN):
+		return self.QueryCurs.execute("SELECT PASSWORD FROM Utilisateur WHERE LOGIN=?",(LOGIN,),).fetchall()
 
 
 if __name__ == '__main__':

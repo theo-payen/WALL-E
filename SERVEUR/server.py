@@ -78,16 +78,10 @@ class Serveur():
 			exit
 
 	def Instruction(self,client, infosClient, server):   
-		
-
 		adresseIP = infosClient[0]
 		port = str(infosClient[1])
 		self.logging.info("START threadsClients for " + adresseIP + " : " +str(port))
 
-		#self.logging.info(str(client) + str(adresseIP) + str(port) + str(server))
-
-		#self.logging.info(self.SQL.Get_Value("*","ID","*"))
-		
 		if self.recv() == "CONNECTION":
 			self.logging.info("CONNECTION")
 
@@ -104,10 +98,17 @@ class Serveur():
 		# faire les requet dans bdd
 		LOGIN_DB = str(self.SQL.Search_LOGIN(self.LOGIN))
 		PASSWORD_DB = str(self.SQL.Search_PASSWORD(self.LOGIN))
+
+		if self.LOGIN in LOGIN_DB and self.PASSWORD in PASSWORD_DB:
+			self.send("login ok")
+			self.logging.info("CONNECTION APPROUVE FOR" + self.LOGIN)
+		else:
+			self.send("error login or password")
+			self.logging.warning("CONNECTION REFUSE FOR" + self.LOGIN)
 		
-		print (LOGIN_DB,PASSWORD_DB)
-		self.send("login ok")
-		print ("ok")
+
+
+
 
 		self.close()
 		

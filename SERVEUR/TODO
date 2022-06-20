@@ -24,7 +24,9 @@
 
 
 #TODO: CLIENT CONNECTION CLIENT SERVER
+# * OK: CLIENT LOGIN
 #TODO: CLIENT INTERFACE ADMIN 
 #TODO: CLIENT INTERFACE CLIENT
+#TODO: thread ecoute a l'infini et renvoi des information au client
 
 #FIXME: TEST

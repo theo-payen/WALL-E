@@ -81,16 +81,6 @@ class Serveur():
 		adresseIP = infosClient[0]
 		port = str(infosClient[1])
 		self.logging.info("START threadsClients for " + adresseIP + " : " +str(port))
-
-		if self.recv() == "CONNECTION":
-			self.logging.info("CONNECTION")
-
-			self.logging.info("CONNECTION APPROUVE")
-			self.send("APPROUVE")
-		else:
-			self.logging.warning("CONNECTION REFUSE")
-			self.send("REFUSE")
-			self.close()
 		
 		MESSAGE = self.recv().split(" ")
 		self.LOGIN = MESSAGE[0]
@@ -99,18 +89,16 @@ class Serveur():
 		LOGIN_DB = str(self.SQL.Search_LOGIN(self.LOGIN))
 		PASSWORD_DB = str(self.SQL.Search_PASSWORD(self.LOGIN))
 
-		if self.LOGIN in LOGIN_DB and self.PASSWORD in PASSWORD_DB:
-			self.send("login ok")
-			self.logging.info("CONNECTION APPROUVE FOR" + self.LOGIN)
-		else:
-			self.send("error login or password")
+		if not self.LOGIN in LOGIN_DB and self.PASSWORD in PASSWORD_DB:
+			self.send("ERROR_CONNECTION")
 			self.logging.warning("CONNECTION REFUSE FOR" + self.LOGIN)
+			self.close()
+		else:
+			self.send("APPROUVE")
+			self.logging.info("CONNECTION APPROUVE FOR" + self.LOGIN)
 		
 
-
-
-
-		self.close()
+			self.close()
 		
 		#
 		# connexion a la db 

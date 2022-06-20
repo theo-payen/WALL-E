@@ -1,5 +1,4 @@
 #!/usr/bin/python
-from SERVEUR.SQL import DATA_BASE
 from SQL import SQL
 from tools import TOOLS
 from logging import Logging
@@ -77,7 +76,7 @@ class Serveur():
 			self.logging.error("Impossible de fermer la connection avec le client")
 			exit
 
-	def threading (self,client, infosClient, server):   
+	def Instruction(self,client, infosClient, server):   
 		
 
 		adresseIP = infosClient[0]

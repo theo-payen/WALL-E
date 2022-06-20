@@ -7,19 +7,19 @@ import socket
 
 class Serveur():
 	def __init__(self,IP,PORT,DATA_BASE):
-		
+		# IP PORT 
 		self.IP = IP
 		self.PORT = PORT
 
 		self.ID_client = 0
 		self.infosocket = {"ID":[],"SOCKET":[]}
-
+		# FILE LOG
 		self.FILE_LOG = "Folder_log/server.log"
 		self.logging = Logging(self.FILE_LOG)
-		
+		# BASE SQL
 		self.DATA_BASE = DATA_BASE
 		self.SQL = SQL(self.DATA_BASE)
-
+		# TOOLS
 		self.TOOLS = TOOLS()
 
 	def start(self):

@@ -1,11 +1,12 @@
 #!/usr/bin/python
+from SERVEUR.SQL import DATA_BASE
 from SQL import SQL
 from tools import TOOLS
 from logging import Logging
 import socket
 
 class Serveur():
-	def __init__(self,IP,PORT):
+	def __init__(self,IP,PORT,DATA_BASE):
 		
 		self.IP = IP
 		self.PORT = PORT
@@ -15,14 +16,10 @@ class Serveur():
 
 		self.FILE_LOG = "Folder_log/server.log"
 		self.logging = Logging(self.FILE_LOG)
-
-	def initialise_sql(self,DATA_BASE):
+		
 		self.DATA_BASE = DATA_BASE
 		self.SQL = SQL(self.DATA_BASE)
-		if self.SQL.Get_file_DB() == False:
-			self.logging.info("fichier db crée")
 
-	def initialise_tools(self):
 		self.TOOLS = TOOLS()
 
 	def start(self):

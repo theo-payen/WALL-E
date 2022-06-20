@@ -6,8 +6,7 @@ IP = "localhost"
 PORT = 3401
 DATA_BASE = "DataBase.db"
 
-SERVER = Serveur(IP,PORT)
-SERVER.initialise_sql(DATA_BASE)
+SERVER = Serveur(IP,PORT,DATA_BASE)
 SERVER.start()
 
 threadsClients = []

@@ -70,10 +70,15 @@ class SQL():
 		self.commit()
 
 	# recherche
+	def Search_LOGIN_and_PASSWORD(self,LOGIN):
+		return self.QueryCurs.execute("SELECT ID,LOGIN,PASSWORD FROM Utilisateur WHERE LOGIN=?",(LOGIN,),).fetchall()
+
 	def Search_LOGIN(self,LOGIN):
 		return self.QueryCurs.execute("SELECT LOGIN FROM Utilisateur WHERE LOGIN=?",(LOGIN,),).fetchall()
 	def Search_PASSWORD(self,LOGIN):
 		return self.QueryCurs.execute("SELECT PASSWORD FROM Utilisateur WHERE LOGIN=?",(LOGIN,),).fetchall()
+	def Search_ID(self,LOGIN):
+		return self.QueryCurs.execute("SELECT ID FROM Utilisateur WHERE LOGIN=?",(LOGIN,),).fetchall()
 
 
 if __name__ == '__main__':

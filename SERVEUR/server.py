@@ -1,5 +1,4 @@
 #!/usr/bin/python
-from time import sleep
 from SQL import SQL
 from tools import TOOLS
 from logging import Logging
@@ -86,17 +85,28 @@ class Serveur():
 		self.LOGIN = MESSAGE[0]
 		self.PASSWORD = MESSAGE[1]
 		# faire les requet dans bdd
-		LOGIN_DB = str(self.SQL.Search_LOGIN(self.LOGIN))
-		PASSWORD_DB = str(self.SQL.Search_PASSWORD(self.LOGIN))
+		
+		self.TEST = self.SQL.Search_LOGIN_and_PASSWORD(self.LOGIN)
+		print (self.TEST)
+		l = self.TEST.split()
+		print (l)
 
-		if self.LOGIN is None or self.PASSWORD is None or not self.LOGIN in LOGIN_DB or not self.PASSWORD in PASSWORD_DB:
+		
+		#print (self.ID,self.LOGIN,self.PASSWORD)
+
+		self.LOGIN_DB = str(self.SQL.Search_LOGIN(self.LOGIN))
+		self.PASSWORD_DB = str(self.SQL.Search_PASSWORD(self.LOGIN))
+
+		if self.LOGIN is None or self.PASSWORD is None or not self.LOGIN in self.LOGIN_DB or not self.PASSWORD in self.PASSWORD_DB:
 			self.send("ERROR_CONNECTION")
 			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
 			self.close()
 		else:
 			self.send("APPROUVE")
-			self.logging.info("CONNECTION APPROUVE FOR" + self.LOGIN)
-		
+			self.logging.info("CONNECTION APPROUVE FOR " + self.LOGIN)
+			# TODO get les droits
+
+
 
 			self.close()
 		

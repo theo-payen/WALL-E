@@ -3,9 +3,7 @@ from SQL import SQL
 from tools import TOOLS
 from logging import Logging
 import socket
-# TODO mettre en place les try
-# TODO commanter le code
-# TODO FINALISER LA CLASS
+
 class Serveur():
 	def __init__(self,IP,PORT):
 		
@@ -95,7 +93,7 @@ class Serveur():
 		
 		if self.recv() == "CONNECTION":
 			self.logging.info("CONNECTION")
-			# TODO ## test
+
 			self.logging.info("CONNECTION APPROUVE")
 			self.send("APPROUVE")
 		else:
@@ -156,7 +154,7 @@ class Serveur():
 				pass
 			else:
 
-				# TODO a faie 
+
 				#print ("error")
 				pass
 		self.close()

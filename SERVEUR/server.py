@@ -89,9 +89,9 @@ class Serveur():
 		LOGIN_DB = str(self.SQL.Search_LOGIN(self.LOGIN))
 		PASSWORD_DB = str(self.SQL.Search_PASSWORD(self.LOGIN))
 
-		if not self.LOGIN in LOGIN_DB and self.PASSWORD in PASSWORD_DB:
+		if self.LOGIN is None or self.PASSWORD is None or not self.LOGIN in LOGIN_DB or not self.PASSWORD in PASSWORD_DB:
 			self.send("ERROR_CONNECTION")
-			self.logging.warning("CONNECTION REFUSE FOR" + self.LOGIN)
+			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
 			self.close()
 		else:
 			self.send("APPROUVE")

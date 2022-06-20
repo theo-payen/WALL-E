@@ -1,4 +1,4 @@
-import socket , threading, hashlib , os, random, string, re
+import socket , threading, hashlib , os, random, string, re, sys
 from telnetlib import STATUS
 
 def password_alleatoire():
@@ -55,7 +55,8 @@ CLIENT = CLIENT(IP,PORT)
 
 i = 0
 while True :
-    CLIENT.connection()
+	i = i + 1
+	CLIENT.connection()
 	LOGIN = input("saisir votre login: ")
 	PASSWORD = input("saisir votre mots de passe: ")
 
@@ -67,7 +68,8 @@ while True :
 		print ("Login ou Mots de passe incorect")
 		CLIENT.close
 		if i == 3 :
-			exit
+			print("trop de t'entative")
+			sys.exit()
 	elif STATUS_CONNECTION == ("APPROUVE"):
 		print ("t co mon ruf")
 		break

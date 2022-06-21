@@ -21,8 +21,6 @@ class Serveur():
 		# TOOLS
 		self.TOOLS = TOOLS()
 
-		self.CONNECTION_FTP_SITE_GRENOBLE()
-		self.FTP_GRENOBLE.dir()
 	def CONNECTION_FTP_SITE_SIEGE(self):
 		self.FTP_SIEGE = FTP("172.20.20.35","siege","siege")
 	def CONNECTION_FTP_SITE_RENNES(self):

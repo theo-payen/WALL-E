@@ -89,34 +89,38 @@ while True :
 		NOM = MESSAGE_CONNECTION[3]
 		PRENOM = MESSAGE_CONNECTION[4]
 		SITE = MESSAGE_CONNECTION[5]
-		
-		print ("\nBienvenu",PRENOM,",",NOM,"du site de",SITE)
-		while True:
-			if ROLE == "1":
-				
-				print("tu est connecter en t'en qu'administrateur")
-				#menu admin
-				print ("""
-				[1]     .afficher les utilisateurs
-				[2]     .ajouter un nouvau utilisateur
-				[3]     .modifier un utilisateur
-				[4]     .supprimer un utilisateur
-				[5]     .quitter
-				""")
-				option=input("?")
+		break
+	else:
+		print("Error")
+		sys.exit()
 
-				if option == 1:
-					CLIENT.send("LISTE_ALL_USER")
-					print(CLIENT.recv())
-				elif option == 2:
-					pass
-				elif option == 3:
-					pass
-				elif option == 4:
-					pass
-				elif option == 5:
-					pass
-				break				
+print ("\nBienvenu",PRENOM,",",NOM,"du site de",SITE)
+
+while True:
+	if ROLE == "1":
+		print("tu est connecter en t'en qu'administrateur")
+		#menu admin
+		print ("""
+		[1]     .afficher les utilisateurs
+		[2]     .ajouter un nouvau utilisateur
+		[3]     .modifier un utilisateur
+		[4]     .supprimer un utilisateur
+		[5]     .quitter
+		""")
+		option=input("?")
+
+		if option == 1:				
+			CLIENT.send("LISTE_ALL_USER")
+			print(CLIENT.recv())
+		elif option == 2:
+			pass
+		elif option == 3:
+			pass
+		elif option == 4:
+			pass
+		elif option == 5:
+			pass
+		break				
 
 
 
@@ -126,12 +130,12 @@ while True :
 			else:
 				# menu utilisateur
 				print ("Tu est connecter en t'en qu'utilisateur")
-				print ("""
+				print (
 				[1]     .modifier le mot de passe 
 				[2]     .FTP
 				[2]     .BACKUP
 				[3]     .quitter
-				""")
+				)
 				option=input("?")
 				break
 		
@@ -139,9 +143,7 @@ while True :
 
 		break
 
-
-print (CLIENT.recv())
-
+"""
 CLIENT.close()
 
 #TODO : erreur si le mdp a un espace dans son nom

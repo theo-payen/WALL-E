@@ -67,9 +67,10 @@ while True :
 	LOGIN = input("saisir votre login: ")
 	PASSWORD = input("saisir votre mots de passe: ")
 
-	CLIENT.send(LOGIN + " " + CLIENT.hashe_password(PASSWORD))
+	CLIENT.send(LOGIN + "," + CLIENT.hashe_password(PASSWORD))
 
-	MESSAGE_CONNECTION = CLIENT.recv()	
+	MESSAGE_CONNECTION = CLIENT.recv().split(",")
+
 	STATUS_CONNECTION = MESSAGE_CONNECTION[0]
 
 	if STATUS_CONNECTION == ("ERROR_CONNECTION"):
@@ -79,13 +80,23 @@ while True :
 			print("trop de t'entative")
 			sys.exit()
 	elif STATUS_CONNECTION == ("APPROUVE"):
-		print ("t co mon ruf")
 		LOGIN = MESSAGE_CONNECTION[1]
 		ROLE = MESSAGE_CONNECTION[2]
 		NOM = MESSAGE_CONNECTION[3]
 		PRENOM = MESSAGE_CONNECTION[4]
 		SITE = MESSAGE_CONNECTION[5]
-		print ("Bienvenu",PRENOM,NOM,"du site de",SITE)
+		
+		print ("\nBienvenu",PRENOM,",",NOM,"du site de",SITE)
+		while True:
+			if ROLE == 1:
+				print("tu est connecter en t'en qu'administrateur")
+				#menu admin
+				break
+			else:
+				# menu utilisateur
+				print ("Tu est connecter en t'en qu'utilisateur")
+				break
+		
 
 
 		break

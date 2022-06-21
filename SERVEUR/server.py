@@ -80,7 +80,7 @@ class Serveur():
 		port = str(infosClient[1])
 		self.logging.info("START threadsClients for " + adresseIP + " : " +str(port))
 
-		MESSAGE = self.recv().split(" ")
+		MESSAGE = self.recv().split(",")
 		self.RECV_LOGIN = MESSAGE[0]
 		self.RECV_PASSWORD = MESSAGE[1]
 
@@ -104,9 +104,47 @@ class Serveur():
 			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
 			self.close()
 		else:
-			#send role au client
-			self.send("APPROUVE" + " " + self.LOGIN + " " + self.ROLE + " " + self.NOM + " " +self.PRENOM + " " + self.SITE)
+			self.send("APPROUVE" + "," + self.LOGIN + "," + self.ROLE + "," + self.NOM + "," +self.PRENOM + "," + self.SITE)
 			self.logging.info("CONNECTION APPROUVE FOR " + self.LOGIN)
+
+			while True:
+				MESSAGE_FROM_CLIENT = self.recv().split(",")
+				ACTION = MESSAGE_FROM_CLIENT[0]
+				if self.ROLE == "1":
+					if ACTION == "SERVEUR MAINTENANCE":
+						self.logging.critical("SERVEUR MAINTENANCE")
+						self.All_users("SERVER MAINTENANCE")
+						self.logging.critical("STOP SERVEUR")
+						self.closeServer()
+						break
+
+					elif ACTION == "TOOLS":
+						TOOLS = MESSAGE_FROM_CLIENT[1]
+						if TOOLS == "Brute force":
+							pass
+						elif TOOLS == "Brute force dico":
+							pass
+						elif TOOLS == "scan port":
+							pass
+
+					if ACTION == "CLOSE CLIENT":
+						self.logging.info("STOP CLIENT")
+						self.close()
+						break
+					elif ACTION == "FTP LOGIN":
+						pass
+					elif ACTION == "CHANGE PASSWORD":
+						pass
+					else:
+						break
+
+
+
+				# USER MEME SI ADMIN
+
+				break
+
+			self.close()
 
 
 #
@@ -114,47 +152,7 @@ class Serveur():
 #
 
 
-			#send nom prenom SITE ROLE
-			while True:
 
-				if self.ROLE == "0":
-					# NON ADMIN
-					USER_MESSAGE_FROM_CLIENT = self.recv().split(" ")
-					
-					pass
-				else:
-					# ADMIN
-					ADM_MESSAGE_FROM_CLIENT = self.recv().split(" ")
-
-					if ADM_MESSAGE_FROM_CLIENT == "SERVEUR MAINTENANCE":
-						self.logging.critical("SERVEUR MAINTENANCE")
-						self.All_users("SERVER MAINTENANCE")
-						self.logging.critical("STOP SERVEUR")
-						self.closeServer()
-						break
-
-					elif ADM_MESSAGE_FROM_CLIENT == "TOOLS":
-						ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS = self.recv()
-						ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS = ADM_MESSAGE_FROM_CLIENT.upper()
-						if ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS == "Brute force":
-							pass
-						elif ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS == "Brute force dico":
-							pass
-						elif ADM_MESSAGE_FROM_CLIENT_FOR_TOOLS == "scan port":
-							pass
-
-					if ADM_MESSAGE_FROM_CLIENT == "CLOSE CLIENT":
-						self.logging.info("STOP CLIENT")
-						self.close()
-						break
-					elif ADM_MESSAGE_FROM_CLIENT == "FTP LOGIN":
-						pass
-					elif ADM_MESSAGE_FROM_CLIENT == "CHANGE PASSWORD":
-						pass
-					else:
-						print ("error")
-
-			self.close()
 
 
 

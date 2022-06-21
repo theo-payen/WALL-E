@@ -92,7 +92,7 @@ while True :
 		
 		print ("\nBienvenu",PRENOM,",",NOM,"du site de",SITE)
 		while True:
-			if ROLE == 1:
+			if ROLE == "1":
 				print("tu est connecter en t'en qu'administrateur")
 				#menu admin
 				print ("""
@@ -103,7 +103,25 @@ while True :
 				[5]     .quitter
 				""")
 				option=input("?")
-				break
+
+				if option == 1:
+					CLIENT.send("LISTE_ALL_USER")
+					print(CLIENT.recv())
+				elif option == 2:
+					pass
+				elif option == 3:
+					pass
+				elif option == 4:
+					pass
+				elif option == 5:
+					pass
+				break				
+
+
+
+
+
+
 			else:
 				# menu utilisateur
 				print ("Tu est connecter en t'en qu'utilisateur")

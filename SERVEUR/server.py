@@ -113,17 +113,29 @@ class Serveur():
 				ACTION = MESSAGE_FROM_CLIENT[0]
 				if self.ROLE == "1":
 					if ACTION == "LISTE_ALL_USER":
-						pass
+						self.send(self.SQL.Get_all())
 					if ACTION == "ADD_NEW_USER":
+						self.SQL.New_User(1,2,3,4,5,6)
 						pass
 					if ACTION == "EDIT_USER":
 						ACTION2 = MESSAGE_FROM_CLIENT[1]
-						if ACTION2 == "CHANGE_PASSWORD_USER":
-							pass
-						if ACTION2 == "CHANGE_NAME_USER":
-							pass
-						if ACTION2 == "CHANGE_LAST_NAME_USER":
-							pass
+						ID_UPDATE = MESSAGE_FROM_CLIENT[2]
+						VALUE = MESSAGE_FROM_CLIENT[3]
+						
+						if ACTION2 == "CHANGE_LOGIN_USER":
+							self.SQL.Update_LOGIN(VALUE,ID_UPDATE)
+						elif ACTION2 == "CHANGE_PASSWORD_USER":
+							self.SQL.Update_PASSWORD(VALUE,ID_UPDATE)
+						elif ACTION2 == "CHANGE_NOM_USER":
+							self.SQL.Update_NOM(VALUE,ID_UPDATE)
+						elif ACTION2 == "CHANGE_PRENOM_USER":
+							self.SQL.Update_PRENOM(VALUE,ID_UPDATE)
+						elif ACTION2 == "CHANGE_ROLE_USER":
+							self.SQL.Update_ROLE(VALUE,ID_UPDATE)
+						elif ACTION2 == "CHANGE_SITE_USER":
+							self.SQL.Update_SITE(VALUE,ID_UPDATE)
+						else:
+							self.logging.warning("ACTION inconue:" + ACTION2)
 					if ACTION == "DELET_USER":
 						pass
 

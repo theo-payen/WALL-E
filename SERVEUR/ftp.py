@@ -9,21 +9,33 @@ class FTP():
 		self.IP = IP
 		self.USER = USER
 		self.PASSWORD = PASSWORD
-		self.CONNECT = ftplib(self.IP,self.USER,self.PASSWORD)
+		self.CONNECT = self.connect(self.IP,self.USER,self.PASSWORD)
 
-	def envoyer_file(self,fichier):
+	def connect(self,IP,USER,PASSWORD):
+		return ftplib.FTP(IP,USER,PASSWORD)
+	def send_file(self,fichier):
 		file = open(fichier, 'rb') # ici, j'ouvre le fichier ftp.py 
 		self.CONNECT.storbinary('STOR '+fichier, file) # ici (où connect est encore la variable de la connexion), j'indique le fichier à envoyer
 		file.close() # on ferme le fichier
 
-	def list_folder(self):
+	def dir(self):
 		return self.CONNECT.dir() # on récupère le listing
-
-	def rename_file(self,old_name,new_name):
+	def rename(self,old_name,new_name):
 		return self.CONNECT.rename(old_name,new_name)
+	def delete(self,file):
+		return self.CONNECT.delete(file)
+	def mkd(self,folder):
+		self.CONNECT.mkd(folder)
+	def rmd(self,folder):
+		self.CONNECT.rmd(folder)
+	def exit(self):
+		self.CONNECT.quit()
+
+
 
 if __name__ == '__main__':
 	print ("veillez importer le script")
-	ftp = FTP("172.20.20.30","gfive","gfvie")
+	ftp = FTP("172.20.20.35","userftp","userftp")
+	ftp.dir()
 else:
 	print ("Le script tools a été importer avec succès")

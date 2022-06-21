@@ -44,14 +44,15 @@ class Serveur():
 
 	def closeServer(self):
 		self.server.close()
-
+	"""
+	non prioritaire a voir
 	def All_users(self,msg):
 		for socket in self.infosocket["SOCKET"]:
 			try:
 				socket.send((msg).encode())
 			except:
 				self.logging.error("impossible envoyer le message")
-
+	"""
 	def recv(self):
 		try:
 			rep = self.client.recv(255)
@@ -111,14 +112,46 @@ class Serveur():
 				MESSAGE_FROM_CLIENT = self.recv().split(",")
 				ACTION = MESSAGE_FROM_CLIENT[0]
 				if self.ROLE == "1":
+					if ACTION == "LISTE_ALL_USER":
+						pass
+					if ACTION == "ADD_NEW_USER":
+						pass
+					if ACTION == "EDIT_USER":
+						ACTION2 = MESSAGE_FROM_CLIENT[1]
+						if ACTION2 == "CHANGE_PASSWORD_USER":
+							pass
+						if ACTION2 == "CHANGE_NAME_USER":
+							pass
+						if ACTION2 == "CHANGE_LAST_NAME_USER":
+							pass
+					if ACTION == "DELET_USER":
+						pass
+
+
+
+
+
+				if ACTION == "CHANGE_PASSWORD":
+					pass		
+				if ACTION == "FTP":
+					pass
+				if ACTION == "BACKUP":
+					pass	
+				elif ACTION == "CLOSE CLIENT":
+					self.logging.info("STOP CLIENT")
+					self.close()
+					break
+
+					"""
 					if ACTION == "SERVEUR MAINTENANCE":
 						self.logging.critical("SERVEUR MAINTENANCE")
 						self.All_users("SERVER MAINTENANCE")
 						self.logging.critical("STOP SERVEUR")
 						self.closeServer()
 						break
-
-					elif ACTION == "TOOLS":
+					"""
+					"""
+					if ACTION == "TOOLS":
 						TOOLS = MESSAGE_FROM_CLIENT[1]
 						if TOOLS == "Brute force":
 							pass
@@ -126,15 +159,11 @@ class Serveur():
 							pass
 						elif TOOLS == "scan port":
 							pass
+					"""
+					
+					if ACTION == "FTP LOGIN":
+						pass
 
-					if ACTION == "CLOSE CLIENT":
-						self.logging.info("STOP CLIENT")
-						self.close()
-						break
-					elif ACTION == "FTP LOGIN":
-						pass
-					elif ACTION == "CHANGE PASSWORD":
-						pass
 					else:
 						break
 

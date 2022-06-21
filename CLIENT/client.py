@@ -51,8 +51,12 @@ class CLIENT:
 
 	def hashe_password(self,PASSWORD):
 		return hashlib.sha256(PASSWORD.encode()).hexdigest()
+	"""
+	a voir non prioritaire
 	def ecoute_infini(self):
-		pass
+		message_serveur = threading.Thread(target=self.recv)
+		message_serveur.start()
+	"""
 
 
 IP = "localhost"
@@ -91,10 +95,25 @@ while True :
 			if ROLE == 1:
 				print("tu est connecter en t'en qu'administrateur")
 				#menu admin
+				print ("""
+				[1]     .afficher les utilisateurs
+				[2]     .ajouter un nouvau utilisateur
+				[3]     .modifier un utilisateur
+				[4]     .supprimer un utilisateur
+				[5]     .quitter
+				""")
+				option=input("?")
 				break
 			else:
 				# menu utilisateur
 				print ("Tu est connecter en t'en qu'utilisateur")
+				print ("""
+				[1]     .modifier le mot de passe 
+				[2]     .FTP
+				[2]     .BACKUP
+				[3]     .quitter
+				""")
+				option=input("?")
 				break
 		
 

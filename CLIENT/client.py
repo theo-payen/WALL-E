@@ -1,3 +1,4 @@
+from errno import ESTALE
 import socket , threading, hashlib , os, random, string, re, sys
 
 def password_alleatoire():
@@ -95,55 +96,59 @@ while True :
 		sys.exit()
 
 print ("\nBienvenu",PRENOM,",",NOM,"du site de",SITE)
-
+if ROLE == "1":
+	print("tu est connecter en t'en qu'administrateur")
+else:
+	print ("Tu est connecter en t'en qu'utilisateur")
 while True:
-	if ROLE == "1":
-		print("tu est connecter en t'en qu'administrateur")
-		#menu admin
-		print ("""
-		[1]     .afficher les utilisateurs
-		[2]     .ajouter un nouvau utilisateur
-		[3]     .modifier un utilisateur
-		[4]     .supprimer un utilisateur
-		[5]     .quitter
-		""")
+		#MENU
+		print("[1]		.modifier le mot de passe")
+		print("[2]		.FTP")
+		print("[3]		.BACKUP")
+		if ROLE == "1":
+			print("[9]		.Menu Admin")
+		print("[0]		.quitter")
 		option=input("?")
 
-		if option == 1:				
-			CLIENT.send("LISTE_ALL_USER")
-			print(CLIENT.recv())
-		elif option == 2:
+		if ROLE == "1":
+			if option == "9":
+				while True:
+					print("[1]     .afficher les utilisateurs")
+					print("[2]     .ajouter un nouvau utilisateur")
+					print("[3]     .modifier un utilisateur")
+					print("[4]     .supprimer un utilisateur")
+					print("[0]     .quitter")
+					option2=input("?")
+
+					if option2 == "1":				
+						CLIENT.send("LISTE_ALL_USER")
+						print(CLIENT.recv())
+					elif option2 == "2":
+						pass
+					elif option2 == "3":
+						pass
+					elif option2 == "4":
+						pass
+					elif option2 == "0":
+						break
+					else:
+						print("veillez retester")
+		if option == "1":
 			pass
-		elif option == 3:
+		elif option == "2":
 			pass
-		elif option == 4:
+		elif option == "3":
 			pass
-		elif option == 5:
+		elif option == "4":
 			pass
-		break				
+		elif option == "0":
+			print("exit")
+			break
+		else:
+			print("option invalide")
 
 
 
-
-
-
-			else:
-				# menu utilisateur
-				print ("Tu est connecter en t'en qu'utilisateur")
-				print (
-				[1]     .modifier le mot de passe 
-				[2]     .FTP
-				[2]     .BACKUP
-				[3]     .quitter
-				)
-				option=input("?")
-				break
-		
-
-
-		break
-
-"""
 CLIENT.close()
 
 #TODO : erreur si le mdp a un espace dans son nom

@@ -125,8 +125,14 @@ class Serveur():
 				ACTION = MESSAGE_FROM_CLIENT[0]
 				if self.ROLE == 1:
 					print ("adm")
-					if ACTION == "LISTE_ALL_USER":
-						self.send(self.SQL.Get_all())
+					if ACTION == "LISTE_ALL_USER":		
+						LISTE_USER = self.SQL.Get_all()
+						for x in LISTE_USER:
+							self.send(str(x))
+							self.recv
+						self.send("List_User_END")
+						del x
+
 					if ACTION == "ADD_NEW_USER":
 						self.SQL.New_User(1,2,3,4,5,6)
 						pass

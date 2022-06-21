@@ -122,7 +122,11 @@ while True:
 
 					if option2 == "1":				
 						CLIENT.send("LISTE_ALL_USER")
-						print(CLIENT.recv())
+						while True:
+							Reponse_List_User = CLIENT.recv()
+							if Reponse_List_User == "List_User_END":
+								break
+						print (Reponse_List_User)
 					elif option2 == "2":
 						pass
 					elif option2 == "3":

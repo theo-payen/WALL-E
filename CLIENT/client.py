@@ -1,6 +1,6 @@
-from errno import ESTALE
 import socket , threading, hashlib , os, random, string, re, sys
 
+"""
 def password_alleatoire():
 	length = 8
 	chars = string.ascii_letters + string.digits + '!@#$%^&*()'
@@ -22,7 +22,7 @@ def Valide_password():
 			return pwd_h
 		elif valid_pwd== False:
 			print ("mot de passe ne respecte pas l 'exigence ")
-
+"""
 class CLIENT:
 	def __init__(self, IP, PORT):
 		self.IP = IP
@@ -173,5 +173,3 @@ while True:
 
 
 CLIENT.close()
-
-#TODO : erreur si le mdp a un espace dans son nom

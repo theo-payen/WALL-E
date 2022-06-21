@@ -1,10 +1,11 @@
 #!/usr/bin/python
-from SQL import SQL
+from sql import SQL
 from tools import TOOLS
 from logging import Logging
 from ftp import FTP
 import socket, sys
 
+# TODO FAIRE LES LOG !!!!
 class Serveur():
 	def __init__(self,IP,PORT,DATA_BASE):
 		self.IP = IP

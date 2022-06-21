@@ -13,7 +13,10 @@ class FTP():
 		self.CONNECT = self.connect(self.IP,self.USER,self.PASSWORD)
 
 	def connect(self,IP,USER,PASSWORD):
-		return ftplib.FTP(IP,USER,PASSWORD)
+		try :
+			return ftplib.FTP(IP,USER,PASSWORD)
+		except(ftplib.error_temp):
+			return (print("Erreur impossible de joindre le serveur FTP"))
 	def send_file(self,fichier):
 		file = open(fichier, 'rb') # ici, j'ouvre le fichier ftp.py 
 		self.CONNECT.storbinary('STOR '+fichier, file) # ici (où connect est encore la variable de la connexion), j'indique le fichier à envoyer

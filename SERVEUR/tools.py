@@ -29,8 +29,6 @@ class TOOLS():
 		# /!\ threading
 		# utiliser la commande socket
 		pass
-	def affiche_log(self):
-		pass
 
 
 if __name__ == '__main__':

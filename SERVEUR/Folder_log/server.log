@@ -1216,3 +1216,5 @@
 ('06/21/2022 14:04:35', 'INFO', 'Serveur start')
 ('06/21/2022 14:04:39', 'INFO', 'START threadsClients for 127.0.0.1 : 49844')
 ('06/21/2022 14:04:42', 'INFO', 'CONNECTION APPROUVE FOR root')
+('06/21/2022 16:09:05', 'ERROR', 'Impossible de démmaré le serveur')
+('06/21/2022 16:09:53', 'ERROR', 'Impossible de démmaré le serveur')

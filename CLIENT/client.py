@@ -93,6 +93,7 @@ while True :
 		print ("\nBienvenu",PRENOM,",",NOM,"du site de",SITE)
 		while True:
 			if ROLE == "1":
+				
 				print("tu est connecter en t'en qu'administrateur")
 				#menu admin
 				print ("""

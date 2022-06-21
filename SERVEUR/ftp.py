@@ -1,6 +1,11 @@
 #!/usr/bin/python
 from logging import Logging
 import ftplib
+
+# crée 4 utilisateur pour chage site
+#
+#
+#
 class FTP():
 	def __init__(self,IP,USER,PASSWORD) :
 		self.FILE_LOG = "Folder_log/ftp.log"
@@ -35,7 +40,7 @@ class FTP():
 
 if __name__ == '__main__':
 	print ("veillez importer le script")
-	ftp = FTP("172.20.20.35","userftp","userftp")
+	ftp = FTP("172.20.20.35","siege","siege")
 	ftp.dir()
 else:
 	print ("Le script tools a été importer avec succès")

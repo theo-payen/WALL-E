@@ -21,6 +21,19 @@ class Serveur():
 		# TOOLS
 		self.TOOLS = TOOLS()
 
+		self.CONNECTION_FTP_SITE_GRENOBLE()
+		self.FTP_GRENOBLE.dir()
+	def CONNECTION_FTP_SITE_SIEGE(self):
+		self.FTP_SIEGE = FTP("172.20.20.35","siege","siege")
+	def CONNECTION_FTP_SITE_RENNES(self):
+		self.FTP_RENNES = FTP("172.20.20.35","rennes","rennes")
+	def CONNECTION_FTP_SITE_STRASBOURG(self):
+		self.FTP_STRASBOURG = FTP("172.20.20.35","strasbourg","strasbourg")
+	def CONNECTION_FTP_SITE_GRENOBLE(self):
+		self.FTP_GRENOBLE = FTP("172.20.20.35","grenoble","grenoble")
+
+
+
 	def start(self):
 		try:
 			self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

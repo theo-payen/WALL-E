@@ -140,7 +140,26 @@ while True:
 		if option == "1":
 			pass
 		elif option == "2":
-			pass
+			#FTP
+			while True:
+				print("[1]     .afficher les fichier")
+				print("[2]     .supprimer un fichier")
+				print("[3]     .renomé un fichier")
+				print("[0]     .quitter")
+				optionFTP=input("?")
+				if optionFTP == "1":
+					CLIENT.send("FTP_CLIENT" + "," + "LISTE_FILE")
+					reponse = CLIENT.recv()
+					print (reponse)
+				elif optionFTP == "2":
+					pass
+				elif optionFTP == "3":
+					pass
+				elif option2 == "0":
+					break
+				else:	
+					print("error")
+
 		elif option == "3":
 			pass
 		elif option == "4":

@@ -124,7 +124,6 @@ class Serveur():
 				MESSAGE_FROM_CLIENT = self.recv().split(",")
 				ACTION = MESSAGE_FROM_CLIENT[0]
 				if self.ROLE == 1:
-					print ("adm")
 					if ACTION == "LISTE_ALL_USER":		
 						LISTE_USER = self.SQL.Get_all()
 						for x in LISTE_USER:
@@ -159,13 +158,34 @@ class Serveur():
 						pass
 
 
-
-
-
+				#FIN DROIT ADMIN
 				if ACTION == "CHANGE_PASSWORD":
 					pass		
-				if ACTION == "FTP":
-					pass
+				#TODO A TESTER PLUS INTERNET !!!!!
+				if ACTION == "FTP_CLIENT":
+					if self.SITE == "SIEGE":
+						self.CONNECTION_FTP_SITE_SIEGE()
+					elif self.SITE == "GRENOBLE":
+						self.CONNECTION_FTP_SITE_GRENOBLE()
+					elif self.SITE == "RENNES":
+						self.CONNECTION_FTP_SITE_RENNES()
+					elif self.SITE == "STRASBOURG":
+						self.CONNECTION_FTP_SITE_STRASBOURG()
+
+					ACTION2 = MESSAGE_FROM_CLIENT[1]
+					if ACTION2 == "LISTE_FILE":
+						if self.SITE == "SIEGE":
+							self.FTP_SIEGE.dir()
+							self.send("CC")
+						elif self.SITE == "GRENOBLE":
+							self.FTP_GRENOBLE.dir()
+						elif self.SITE == "RENNES":
+							self.FTP_RENNES.dir()
+						elif self.SITE == "STRASBOURG":
+							self.FTP_STRASBOURG.dir()
+
+
+
 				if ACTION == "BACKUP":
 					pass	
 				elif ACTION == "CLOSE CLIENT":

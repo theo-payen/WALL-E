@@ -2,11 +2,10 @@
 from SQL import SQL
 from tools import TOOLS
 from logging import Logging
-import socket
+import socket, sys
 
 class Serveur():
 	def __init__(self,IP,PORT,DATA_BASE):
-		# IP PORT 
 		self.IP = IP
 		self.PORT = PORT
 
@@ -23,20 +22,21 @@ class Serveur():
 
 	def start(self):
 		try:
-			self.logging.info("Serveur start")
 			self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.server.bind((self.IP, self.PORT))
 			self.server.listen(5)
 		except:
 			self.logging.error("Impossible de démmaré le serveur")
-			exit
+			sys.exit()
+		else:
+			self.logging.info("Serveur start")
 
 	def accept(self):
 		try:
 			self.client,self.infosClient = self.server.accept()
 		except:
 			self.logging.error("Impossible detablire la connexion avec le client")
-			exit
+			sys.exit()
 		else:
 			self.ID_client = self.ID_client + 1
 			self.infosocket["ID"].append(self.ID_client)
@@ -55,8 +55,7 @@ class Serveur():
 	def recv(self):
 		try:
 			rep = self.client.recv(255)
-			rep = rep.decode()
-			return rep
+			return rep.decode()
 		except:
 			self.logging.error("impossible de resevoir le message")
 			self.close()
@@ -74,7 +73,7 @@ class Serveur():
 			self.client.close()
 		except:
 			self.logging.error("Impossible de fermer la connection avec le client")
-			exit
+			sys.exit()
 
 	def Instruction(self,client, infosClient, server):   
 		adresseIP = infosClient[0]
@@ -101,19 +100,18 @@ class Serveur():
 		self.PRENOM = self.DATA_USER[5]
 		self.SITE = self.DATA_USER[6]
 
-		print (self.ID,self.SITE)
 		if self.RECV_LOGIN is None or self.RECV_PASSWORD is None or not self.RECV_LOGIN in self.LOGIN or not self.RECV_PASSWORD in self.PASSWORD:
 			self.send("ERROR_CONNECTION")
 			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
 			self.close()
 		else:
+			#send role au client
 			self.send("APPROUVE")
 			self.logging.info("CONNECTION APPROUVE FOR " + self.LOGIN)
-			# TODO get les droits
 			
-
+			#send nom prenom SITE ROLE
 			while True:
-				#send role au client				
+
 				if self.ROLE == "0":
 					# NON ADMIN
 					USER_MESSAGE_FROM_CLIENT = self.recv().split(" ")

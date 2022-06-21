@@ -1,5 +1,4 @@
 import socket , threading, hashlib , os, random, string, re, sys
-from telnetlib import STATUS
 
 def password_alleatoire():
 	length = 8
@@ -29,8 +28,13 @@ class CLIENT:
 		self.PORT = PORT
 		
 	def connection(self):
-		self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.client.connect((self.IP, self.PORT))
+		try:
+			self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			self.client.connect((self.IP, self.PORT))
+		except (ConnectionRefusedError):
+			print ("impossible d'établir la connection entre le serveur et le client")
+			print ("assurez vous que le serveur est bien démarer")
+			sys.exit()
 	def encode(self,msg):
 		return msg.encode()
 	def decode(self,msg):
@@ -47,6 +51,8 @@ class CLIENT:
 
 	def hashe_password(self,PASSWORD):
 		return hashlib.sha256(PASSWORD.encode()).hexdigest()
+	def ecoute_infini(self):
+		pass
 
 
 IP = "localhost"
@@ -56,6 +62,7 @@ CLIENT = CLIENT(IP,PORT)
 i = 0
 while True :
 	i = i + 1
+
 	CLIENT.connection()
 	LOGIN = input("saisir votre login: ")
 	PASSWORD = input("saisir votre mots de passe: ")
@@ -78,3 +85,5 @@ while True :
 print (CLIENT.recv())
 
 CLIENT.close()
+
+#TODO : erreur si le mdp a un espace dans son nom

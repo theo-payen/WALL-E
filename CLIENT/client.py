@@ -69,7 +69,8 @@ while True :
 
 	CLIENT.send(LOGIN + " " + CLIENT.hashe_password(PASSWORD))
 
-	STATUS_CONNECTION = CLIENT.recv()	
+	MESSAGE_CONNECTION = CLIENT.recv()	
+	STATUS_CONNECTION = MESSAGE_CONNECTION[0]
 
 	if STATUS_CONNECTION == ("ERROR_CONNECTION"):
 		print ("Login ou Mots de passe incorect")
@@ -79,6 +80,14 @@ while True :
 			sys.exit()
 	elif STATUS_CONNECTION == ("APPROUVE"):
 		print ("t co mon ruf")
+		LOGIN = MESSAGE_CONNECTION[1]
+		ROLE = MESSAGE_CONNECTION[2]
+		NOM = MESSAGE_CONNECTION[3]
+		PRENOM = MESSAGE_CONNECTION[4]
+		SITE = MESSAGE_CONNECTION[5]
+		print ("Bienvenu",PRENOM,NOM,"du site de",SITE)
+
+
 		break
 
 

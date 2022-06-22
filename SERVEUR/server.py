@@ -180,8 +180,8 @@ class Serveur():
 					ACTION2 = MESSAGE_FROM_CLIENT[1]
 					self.SQL.Update_PASSWORD(ACTION2,self.ID)
 					pass
- 
-				#TODO A TESTER PLUS INTERNET !!!!!
+
+				#TODO A METTRE TOUTE LA PARTIE FTP VERS LE CLIENT
 				if ACTION == "FTP_CLIENT":
 					SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
 					if self.SITE == "SIEGE" or self.ROLE == "1" and SITE_FOR_ADMIN == "SIEGE":

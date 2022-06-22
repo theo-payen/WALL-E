@@ -125,7 +125,23 @@ while True:
 							print (Reponse_List_User)
 					elif option2 == "2":
 						#AJOUTER UN USER
-						pass
+
+						print ("Création d'un nouvelle utilisateur")
+						NEW_USER_LOGIN = input("Le LOGIN\n->")
+						NEW_USER_PASSWORD = CLIENT.hashe_password(input("Le mots de passe:\n->"))
+						ROLE_confirm = input("Votre utilisateur est t-il admin (y)(n):\n->")
+						if ROLE_confirm == "y":
+							NEW_USER_ROLE = "1"
+						elif ROLE_confirm == "n":
+							NEW_USER_ROLE = "0"
+						else:
+							print("\n choix non valide veuillez saisir une option") 
+				
+						NEW_USER_NOM = input("NOM\n->")
+						NEW_USER_PRENOM = input("PRENOM\n->")
+						NEW_USER_SITE = input("SITE\n->")
+						CLIENT.send("ADD_NEW_USER"+ "," + NEW_USER_LOGIN + "," + NEW_USER_PASSWORD + "," + NEW_USER_ROLE + "," + NEW_USER_NOM + "," + NEW_USER_PRENOM + "," + NEW_USER_SITE)
+
 					elif option2 == "3":
 						#EDIT USER
 						pass

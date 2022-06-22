@@ -124,7 +124,7 @@ class Serveur():
 			while True:
 				MESSAGE_FROM_CLIENT = self.recv().split(",")
 				ACTION = MESSAGE_FROM_CLIENT[0]
-
+				self.logging.info("ACTION "+ ACTION + " " + self.LOGIN)
 				if self.ROLE == "1":
 					if ACTION == "LISTE_ALL_USER":		
 						LISTE_USER = self.SQL.Get_all()
@@ -135,8 +135,14 @@ class Serveur():
 						del x
 
 					elif ACTION == "ADD_NEW_USER":
-						self.SQL.New_User(1,2,3,4,5,6)
-						pass
+						NEW_USER_LOGIN = MESSAGE_FROM_CLIENT[1]
+						NEW_USER_PASSWORD = MESSAGE_FROM_CLIENT[2]
+						NEW_USER_ROLE = MESSAGE_FROM_CLIENT[3]
+						NEW_USER_NOM = MESSAGE_FROM_CLIENT[4]
+						NEW_USER_PRENOM = MESSAGE_FROM_CLIENT[5]
+						NEW_USER_SITE = MESSAGE_FROM_CLIENT[6]
+
+						self.SQL.New_User(NEW_USER_LOGIN,NEW_USER_PASSWORD,NEW_USER_ROLE,NEW_USER_NOM,NEW_USER_PRENOM,NEW_USER_SITE)
 					elif ACTION == "EDIT_USER":
 						ACTION2 = MESSAGE_FROM_CLIENT[1]
 						ID_UPDATE = MESSAGE_FROM_CLIENT[2]

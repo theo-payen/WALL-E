@@ -1,3 +1,4 @@
+from ast import Delete
 import socket , threading, hashlib , os, random, string, re, sys
 
 
@@ -177,10 +178,12 @@ while True:
 				print("[1]     .afficher les fichier")
 				print("[2]     .supprimer un fichier")
 				print("[3]     .renomé un fichier")
+				print("[4]     .crée un fichier")
 				print("[0]     .quitter")
 				optionFTP=input("?")
 				if optionFTP == "1":
-					CLIENT.send("FTP_CLIENT" + "," + "LISTE_FILE")
+					# LISTE FILE
+					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "LISTE_FILE")
 
 					while True:
 						Reponse_List_User = CLIENT.recv()
@@ -190,8 +193,15 @@ while True:
 						print (Reponse_List_User)
 
 				elif optionFTP == "2":
-					pass
+					# DELET FILE
+					Delete_name_file = input("saisir le nom du fichier a supprimé")
+					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "DELET_FILE" + "," + Delete_name_file)
 				elif optionFTP == "3":
+					# rename file
+					old_rename_name_file = input("saisir le nom du fichier a renomé")
+					new_rename_name_file = input("saisir le nom nouveau non du fichier")
+					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "DELET_FILE" + "," + old_rename_name_file, + "," + new_rename_name_file)
+				elif optionFTP == "4":
 					pass
 				elif option2 == "0":
 					break

@@ -183,32 +183,33 @@ class Serveur():
  
 				#TODO A TESTER PLUS INTERNET !!!!!
 				if ACTION == "FTP_CLIENT":
-					if self.SITE == "SIEGE":
+					SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
+					if self.SITE == "SIEGE" or self.ROLE == "1" and SITE_FOR_ADMIN == "SIEGE":
 						self.CONNECTION_FTP_SITE_SIEGE()
-					elif self.SITE == "GRENOBLE":
+					elif self.SITE == "GRENOBLE" or self.ROLE == "1" and SITE_FOR_ADMIN == "GRENOBLE":
 						self.CONNECTION_FTP_SITE_GRENOBLE()
-					elif self.SITE == "RENNES":
+					elif self.SITE == "RENNES" or self.ROLE == "1" and SITE_FOR_ADMIN == "RENNES":
 						self.CONNECTION_FTP_SITE_RENNES()
-					elif self.SITE == "STRASBOURG":
+					elif self.SITE == "STRASBOURG" or self.ROLE == "1" and SITE_FOR_ADMIN == "STRASBOURG":
 						self.CONNECTION_FTP_SITE_STRASBOURG()
 
-					ACTION2 = MESSAGE_FROM_CLIENT[1]
+					ACTION2 = MESSAGE_FROM_CLIENT[2]
 					if ACTION2 == "LISTE_FILE":
-						if self.SITE == "SIEGE":
+						if self.SITE == "SIEGE" or self.ROLE == "1" and SITE_FOR_ADMIN == "SIEGE":
 							DIR_SIEGE = self.FTP_SIEGE.dir()
 							for file in DIR_SIEGE:
 								self.send(str(file))
 								self.recv()
 							self.send("LISTE_FILE_END")
 
-						elif self.SITE == "GRENOBLE":
+						elif self.SITE == "GRENOBLE" or self.ROLE == "1" and SITE_FOR_ADMIN == "GRENOBLE":
 							DIR_GRENOBLE = self.FTP_GRENOBLE.dir()
 							for file in DIR_GRENOBLE:
 								self.send(str(file))
 								self.recv()
 							self.send("LISTE_FILE_END")
 
-						elif self.SITE == "RENNES":
+						elif self.SITE == "RENNES" or self.ROLE == "1" and SITE_FOR_ADMIN == "RENNES":
 							DIR_RENNES = self.FTP_RENNES.dir()
 							for file in DIR_RENNES:
 								self.send(str(file))
@@ -223,21 +224,28 @@ class Serveur():
 							self.send("LISTE_FILE_END")
 
 					elif ACTION2 == "DELET_FILE":
-						FILE_DELET = MESSAGE_FROM_CLIENT[2]
-						if self.SITE == "SIEGE":
+						FILE_DELET = MESSAGE_FROM_CLIENT[3]
+						if self.SITE == "SIEGE" or self.ROLE == "1" and SITE_FOR_ADMIN == "SIEGE":
 							self.FTP_SIEGE.delete(FILE_DELET)
-						elif self.SITE == "GRENOBLE":
+						elif self.SITE == "GRENOBLE" or self.ROLE == "1" and SITE_FOR_ADMIN == "GRENOBLE":
 							self.FTP_GRENOBLE.delete(FILE_DELET)
-						elif self.SITE == "RENNES":
+						elif self.SITE == "RENNES" or self.ROLE == "1" and SITE_FOR_ADMIN == "RENNES":
 							self.FTP_RENNES.delete(FILE_DELET)
-						elif self.SITE == "STRASBOURG":
+						elif self.SITE == "STRASBOURG" or self.ROLE == "1" and SITE_FOR_ADMIN == "STRASBOURG":
 							self.FTP_STRASBOURG.delete(FILE_DELET)
 
-					elif ACTION2 == "":
-						pass
-					elif ACTION2 == "":
-						pass
-					elif ACTION2 == "":
+					elif ACTION2 == "RENAME_FILE":
+						OLD_RENAME_FILE = MESSAGE_FROM_CLIENT[3]
+						NEW_RENAME_FILE = MESSAGE_FROM_CLIENT[4]
+						if self.SITE == "SIEGE" or self.ROLE == "1" and SITE_FOR_ADMIN == "SIEGE":
+							self.FTP_SIEGE.rename(OLD_RENAME_FILE,NEW_RENAME_FILE)
+						elif self.SITE == "GRENOBLE" or self.ROLE == "1" and SITE_FOR_ADMIN == "GRENOBLE":
+							self.FTP_GRENOBLE.rename(OLD_RENAME_FILE,NEW_RENAME_FILE)
+						elif self.SITE == "RENNES" or self.ROLE == "1" and SITE_FOR_ADMIN == "RENNES":
+							self.FTP_RENNES.rename(OLD_RENAME_FILE,NEW_RENAME_FILE)
+						elif self.SITE == "STRASBOURG" or self.ROLE == "1" and SITE_FOR_ADMIN == "STRASBOURG":
+							self.FTP_STRASBOURG.rename(OLD_RENAME_FILE,NEW_RENAME_FILE)
+					elif ACTION2 == "NEW_FILE":
 						pass
 
 

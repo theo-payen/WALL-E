@@ -1,7 +1,4 @@
-from ast import Delete
-from distutils.command.upload import upload
 import socket , threading, hashlib , os, random, string, re, sys
-from turtle import up
 
 
 def password_alleatoire():

@@ -109,23 +109,32 @@ while True:
 					print("[2]     .ajouter un nouvau utilisateur")
 					print("[3]     .modifier un utilisateur")
 					print("[4]     .supprimer un utilisateur")
-					print("[5]     .stop le server")
+					print("[5]     .TOOLS")
+					print("[6]     .stop le server")
 					print("[0]     .quitter")
 					option2=input("?")
 
-					if option2 == "1":				
+					if option2 == "1":	
+						#LISTER LES UTILISATEURS
 						CLIENT.send("LISTE_ALL_USER")
 						while True:
 							Reponse_List_User = CLIENT.recv()
 							if Reponse_List_User == "List_User_END":
 								break
-						print (Reponse_List_User)
+							CLIENT.send("OK")
+							print (Reponse_List_User)
 					elif option2 == "2":
+						#AJOUTER UN USER
 						pass
 					elif option2 == "3":
+						#EDIT USER
 						pass
 					elif option2 == "4":
+						#DELET USER
 						pass
+					elif option2 == "5":
+						CLIENT.send("STOP_SERVER")
+						sys.exit()
 					elif option2 == "0":
 						break
 					else:
@@ -172,6 +181,7 @@ while True:
 		elif option == "4":
 			pass
 		elif option == "0":
+			CLIENT.send("CLOSE_CLIENT")
 			print("exit")
 			break
 		else:

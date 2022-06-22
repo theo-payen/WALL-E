@@ -15,3 +15,6 @@
 ('06/22/2022 09:17:55', 'INFO', 'UPDATE PASSWORD ID:1')
 ('06/22/2022 09:19:04', 'INFO', 'UPDATE PASSWORD ID:1')
 ('06/22/2022 09:45:13', 'INFO', 'UPDATE PASSWORD ID:1')
+('06/22/2022 09:48:36', 'WARNING', 'génération de la base de donées')
+('06/22/2022 09:48:36', 'WARNING', "création de l'utilisateur par default root avec comme mdp root ")
+('06/22/2022 09:48:36', 'INFO', 'New User:root')

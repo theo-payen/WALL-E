@@ -124,19 +124,20 @@ class Serveur():
 			while True:
 				MESSAGE_FROM_CLIENT = self.recv().split(",")
 				ACTION = MESSAGE_FROM_CLIENT[0]
-				if self.ROLE == 1:
+
+				if self.ROLE == "1":
 					if ACTION == "LISTE_ALL_USER":		
 						LISTE_USER = self.SQL.Get_all()
 						for x in LISTE_USER:
 							self.send(str(x))
-							self.recv
+							self.recv()
 						self.send("List_User_END")
 						del x
 
-					if ACTION == "ADD_NEW_USER":
+					elif ACTION == "ADD_NEW_USER":
 						self.SQL.New_User(1,2,3,4,5,6)
 						pass
-					if ACTION == "EDIT_USER":
+					elif ACTION == "EDIT_USER":
 						ACTION2 = MESSAGE_FROM_CLIENT[1]
 						ID_UPDATE = MESSAGE_FROM_CLIENT[2]
 						VALUE = MESSAGE_FROM_CLIENT[3]
@@ -155,8 +156,19 @@ class Serveur():
 							self.SQL.Update_SITE(VALUE,ID_UPDATE)
 						else:
 							self.logging.warning("ACTION inconue:" + ACTION2)
-					if ACTION == "DELET_USER":
+					elif ACTION == "DELET_USER":
 						pass
+					elif ACTION == "TOOLS":
+						TOOLS = MESSAGE_FROM_CLIENT[1]
+						if TOOLS == "Brute force":
+							pass
+						elif TOOLS == "Brute force dico":
+							pass
+						elif TOOLS == "scan port":
+							pass
+					elif ACTION == "STOP_SERVER":
+						self.closeServer()
+
 				#FIN DROIT ADMIN
 
 				if ACTION == "CHANGE_PASSWORD":
@@ -196,7 +208,7 @@ class Serveur():
 
 				if ACTION == "BACKUP":
 					pass	
-				elif ACTION == "CLOSE CLIENT":
+				elif ACTION == "CLOSE_CLIENT":
 					self.logging.info("STOP CLIENT")
 					self.close()
 					break
@@ -209,41 +221,11 @@ class Serveur():
 						self.closeServer()
 						break
 					"""
-					"""
-					if ACTION == "TOOLS":
-						TOOLS = MESSAGE_FROM_CLIENT[1]
-						if TOOLS == "Brute force":
-							pass
-						elif TOOLS == "Brute force dico":
-							pass
-						elif TOOLS == "scan port":
-							pass
-					"""
-					
-					if ACTION == "FTP LOGIN":
-						pass
 
-					else:
-						break
-
-
-
-				# USER MEME SI ADMIN
 
 				break
 
 			self.close()
-
-
-#
-# A FAIRE D'URGENCE
-#
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

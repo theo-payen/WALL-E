@@ -23,7 +23,11 @@ class FTP():
 		file.close() # on ferme le fichier
 
 	def dir(self):
-		return self.CONNECT.dir() # on récupère le listing
+		#TODO: a tester
+		data = []
+		self.CONNECT.dir(data.append) # on récupère le listing
+		for line in data:
+			print ("-", line)
 	def rename(self,old_name,new_name):
 		return self.CONNECT.rename(old_name,new_name)
 	def delete(self,file):
@@ -40,4 +44,4 @@ class FTP():
 if __name__ == '__main__':
 	print ("veillez importer le script")
 else:
-	print ("Le script tools a été importer avec succès")
+	print ("Le script ftp a été importer avec succès")

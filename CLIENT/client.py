@@ -1,28 +1,14 @@
 import socket , threading, hashlib , os, random, string, re, sys
 
-"""
+
 def password_alleatoire():
 	length = 8
 	chars = string.ascii_letters + string.digits + '!@#$%^&*()'
 	random.seed = (os.urandom(1024))
 	return (''.join(random.choice(chars) for i in range(length)))
 
-def password_check(pwd):
-	if re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', pwd):
-		return True
-	else:
-		return False
 
-def Valide_password(): 
-	while True:
-		pwd =input ("modifier le mot de passe conetenant 8 caratere minimum : ")
-		valid_pwd=password_check(pwd)
-		if valid_pwd== True:
-			pwd_h = hashe_password(pwd)
-			return pwd_h
-		elif valid_pwd== False:
-			print ("mot de passe ne respecte pas l 'exigence ")
-"""
+
 class CLIENT:
 	def __init__(self, IP, PORT):
 		self.IP = IP
@@ -51,7 +37,13 @@ class CLIENT:
 		self.client.close()
 
 	def hashe_password(self,PASSWORD):
-		return hashlib.sha256(PASSWORD.encode()).hexdigest()
+		return str(hashlib.sha256(PASSWORD.encode()).hexdigest())
+
+	def password_check(pwd):
+		if re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', pwd):
+			return True
+		else:
+			return False
 	"""
 	a voir non prioritaire
 	def ecoute_infini(self):
@@ -117,6 +109,7 @@ while True:
 					print("[2]     .ajouter un nouvau utilisateur")
 					print("[3]     .modifier un utilisateur")
 					print("[4]     .supprimer un utilisateur")
+					print("[5]     .stop le server")
 					print("[0]     .quitter")
 					option2=input("?")
 
@@ -138,7 +131,21 @@ while True:
 					else:
 						print("veillez retester")
 		if option == "1":
-			pass
+		#modifier le MDP
+			while True:
+				#TODO a amelioré
+				print ("0 pour quité")
+				OLD_PASSWORD = input("saisir votre ancien mots de passe:\n->")
+				NEW_PASSWORD = input("saisir votre nouveau mots de passe:\n->")
+				NEW_PASSWORD2 = input("Valider votre nouveau mots de passe:\n->")
+
+				if not NEW_PASSWORD == NEW_PASSWORD2 or CLIENT.password_check == False:
+					print("Une erreur est survenu veillez retester")
+				elif OLD_PASSWORD == "0" or NEW_PASSWORD == "0" or NEW_PASSWORD2 == "0":
+					break
+				else:
+					CLIENT.send("CHANGE_PASSWORD" + "," + CLIENT.hashe_password(NEW_PASSWORD))
+					break
 		elif option == "2":
 			#FTP
 			while True:

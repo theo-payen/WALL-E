@@ -157,11 +157,13 @@ class Serveur():
 							self.logging.warning("ACTION inconue:" + ACTION2)
 					if ACTION == "DELET_USER":
 						pass
-
-
 				#FIN DROIT ADMIN
+
 				if ACTION == "CHANGE_PASSWORD":
-					pass		
+					ACTION2 = MESSAGE_FROM_CLIENT[1]
+					self.SQL.Update_PASSWORD(ACTION2,self.ID)
+					pass
+ 
 				#TODO A TESTER PLUS INTERNET !!!!!
 				if ACTION == "FTP_CLIENT":
 					if self.SITE == "SIEGE":
@@ -176,8 +178,13 @@ class Serveur():
 					ACTION2 = MESSAGE_FROM_CLIENT[1]
 					if ACTION2 == "LISTE_FILE":
 						if self.SITE == "SIEGE":
-							self.FTP_SIEGE.dir()
-							self.send("CC")
+							
+							ftpdir = self.FTP_SIEGE.dir()
+							print("coucou")
+							print(ftpdir)
+							print(type(ftpdir))
+							self.send(str(ftpdir))
+
 						elif self.SITE == "GRENOBLE":
 							self.FTP_GRENOBLE.dir()
 						elif self.SITE == "RENNES":

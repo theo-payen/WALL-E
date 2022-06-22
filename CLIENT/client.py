@@ -1,5 +1,7 @@
 from ast import Delete
+from distutils.command.upload import upload
 import socket , threading, hashlib , os, random, string, re, sys
+from turtle import up
 
 
 def password_alleatoire():
@@ -178,7 +180,8 @@ while True:
 				print("[1]     .afficher les fichier")
 				print("[2]     .supprimer un fichier")
 				print("[3]     .renomé un fichier")
-				print("[4]     .crée un fichier")
+				print("[4]     .upload fichier")
+				print("[5]     .download fichier")
 				print("[0]     .quitter")
 				optionFTP=input("?")
 				if optionFTP == "1":
@@ -202,6 +205,13 @@ while True:
 					new_rename_name_file = input("saisir le nom nouveau non du fichier")
 					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "DELET_FILE" + "," + old_rename_name_file, + "," + new_rename_name_file)
 				elif optionFTP == "4":
+					upload_file = input("chemain du fichier")
+					upload_file = open(upload_file, 'rb') # ici, j'ouvre le fichier ftp.py 
+					print(type(upload_file),upload_file)
+					print(str(upload_file))
+					print(upload_file)
+					#connect.storbinary('STOR '+fichier, file) # ici (où connect est encore la variable de la connexion), j'indique le fichier à envoyer
+					upload_file.close() # on ferme le fichier
 					pass
 				elif option2 == "0":
 					break

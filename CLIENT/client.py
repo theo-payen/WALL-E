@@ -144,7 +144,53 @@ while True:
 
 					elif option2 == "3":
 						#EDIT USER
-						pass
+
+						Modif_ID = input("slect l'id de l'utilisateur :")
+						while True:
+							print("[1]     .modif login")
+							print("[2]     .pwd")
+							print("[3]     .role")
+							print("[4]     .nom")
+							print("[5]     .prenom")
+							print("[6]     .SITE")
+							print("[0]     .quiter")
+							modif_option=input("?")
+							
+							if modif_option=="1":                            
+								Modif_LOGIN =input ("modif login en : ")
+								CLIENT.send("EDIT_USER" + "," + "CHANGE_LOGIN_USER"+ "," + Modif_LOGIN + "," + Modif_ID)
+
+							elif modif_option == "2":
+								Modif_PASSWORD =input ("pwd:")
+								CLIENT.send("EDIT_USER" + "," + "CHANGE_PASSWORD_USER"+ "," + CLIENT.hashe_password(Modif_PASSWORD) + "," + Modif_ID)
+
+							elif modif_option == "3":
+								Modif_ROLE_CONFIRME = input("voulez vous lui donne des droit administrateur (y)(n)")
+								if Modif_ROLE_CONFIRME == "y":
+									CLIENT.send("EDIT_USER" + "," + "CHANGE_ROLE_USER"+ "," + "1" + "," + Modif_ID)
+								elif Modif_ROLE_CONFIRME == "n" :
+									CLIENT.send("EDIT_USER" + "," + "CHANGE_ROLE_USER"+ "," + "0" + "," + Modif_ID)
+								else:
+									print("\n choix non valide veuillez saisir une option ")
+
+							elif modif_option == "4":
+								Modif_NOM =input ("modif nom: ")
+								CLIENT.send("EDIT_USER" + "," + "CHANGE_NOM_USER"+ Modif_NOM + "," + Modif_ID)
+    
+							elif modif_option == "5":
+								Modif_PRENOM =input ("modif prenom: ")
+								CLIENT.send("EDIT_USER" + "," + "CHANGE_PRENOM_USER"+ "," + Modif_PRENOM + "," + Modif_ID)
+
+							elif modif_option == "6":
+								Modif_SITE =input ("modif SITE: ")
+								CLIENT.send("EDIT_USER" + "," + "CHANGE_SITE_USER"+ "," + Modif_SITE + "," + Modif_ID)
+
+							elif modif_option == "0":
+								print ("quiter")
+								break
+							else:
+								print("\n choix non valide veuillez saisir une option ") 
+								pass
 					elif option2 == "4":
 						#DELET USER
 						pass

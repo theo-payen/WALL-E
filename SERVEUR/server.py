@@ -124,7 +124,7 @@ class Serveur():
 			while True:
 				MESSAGE_FROM_CLIENT = self.recv().split(",")
 				ACTION = MESSAGE_FROM_CLIENT[0]
-				self.logging.info("ACTION "+ ACTION + " " + self.LOGIN)
+				self.logging.info("ACTION "+ ACTION + " PAR " + self.LOGIN)
 				if self.ROLE == "1":
 					if ACTION == "LISTE_ALL_USER":		
 						LISTE_USER = self.SQL.Get_all()
@@ -132,6 +132,7 @@ class Serveur():
 							self.send(str(user))
 							self.recv()
 						self.send("List_User_END")
+						del user
 
 					elif ACTION == "ADD_NEW_USER":
 						NEW_USER_LOGIN = MESSAGE_FROM_CLIENT[1]
@@ -144,25 +145,27 @@ class Serveur():
 						self.SQL.New_User(NEW_USER_LOGIN,NEW_USER_PASSWORD,NEW_USER_ROLE,NEW_USER_NOM,NEW_USER_PRENOM,NEW_USER_SITE)
 					elif ACTION == "EDIT_USER":
 						ACTION2 = MESSAGE_FROM_CLIENT[1]
-						ID_UPDATE = MESSAGE_FROM_CLIENT[2]
-						VALUE = MESSAGE_FROM_CLIENT[3]
-						
+						VALUE = MESSAGE_FROM_CLIENT[2]
+						ID_UPDATE = MESSAGE_FROM_CLIENT[3]
+
+						print(ACTION2,ID_UPDATE,VALUE)
 						if ACTION2 == "CHANGE_LOGIN_USER":
 							self.SQL.Update_LOGIN(VALUE,ID_UPDATE)
 						elif ACTION2 == "CHANGE_PASSWORD_USER":
 							self.SQL.Update_PASSWORD(VALUE,ID_UPDATE)
+						elif ACTION2 == "CHANGE_ROLE_USER":
+							self.SQL.Update_ROLE(VALUE,ID_UPDATE)
 						elif ACTION2 == "CHANGE_NOM_USER":
 							self.SQL.Update_NOM(VALUE,ID_UPDATE)
 						elif ACTION2 == "CHANGE_PRENOM_USER":
 							self.SQL.Update_PRENOM(VALUE,ID_UPDATE)
-						elif ACTION2 == "CHANGE_ROLE_USER":
-							self.SQL.Update_ROLE(VALUE,ID_UPDATE)
 						elif ACTION2 == "CHANGE_SITE_USER":
 							self.SQL.Update_SITE(VALUE,ID_UPDATE)
 						else:
 							self.logging.warning("ACTION inconue:" + ACTION2)
 					elif ACTION == "DELET_USER":
 						pass
+					# TODO: a faire
 					elif ACTION == "TOOLS":
 						TOOLS = MESSAGE_FROM_CLIENT[1]
 						if TOOLS == "Brute force":
@@ -180,9 +183,9 @@ class Serveur():
 					ACTION2 = MESSAGE_FROM_CLIENT[1]
 					self.SQL.Update_PASSWORD(ACTION2,self.ID)
 					pass
-
+				#FIXME:
 				#TODO A METTRE TOUTE LA PARTIE FTP VERS LE CLIENT
-				if ACTION == "FTP_CLIENT":
+				elif ACTION == "FTP_CLIENT":
 					SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
 					if self.SITE == "SIEGE" or self.ROLE == "1" and SITE_FOR_ADMIN == "SIEGE":
 						self.CONNECTION_FTP_SITE_SIEGE()
@@ -250,7 +253,7 @@ class Serveur():
 
 
 
-				if ACTION == "BACKUP":
+				elif ACTION == "BACKUP":
 					pass	
 				elif ACTION == "CLOSE_CLIENT":
 					self.logging.info("STOP CLIENT")

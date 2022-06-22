@@ -19,3 +19,4 @@
 ('06/22/2022 09:48:36', 'WARNING', "création de l'utilisateur par default root avec comme mdp root ")
 ('06/22/2022 09:48:36', 'INFO', 'New User:root')
 ('06/22/2022 10:31:25', 'INFO', 'New User:test')
+('06/22/2022 21:11:48', 'INFO', 'UPDATE ROLE ID:1')

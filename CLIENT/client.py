@@ -181,8 +181,14 @@ while True:
 				optionFTP=input("?")
 				if optionFTP == "1":
 					CLIENT.send("FTP_CLIENT" + "," + "LISTE_FILE")
-					reponse = CLIENT.recv()
-					print (reponse)
+
+					while True:
+						Reponse_List_User = CLIENT.recv()
+						if Reponse_List_User == "LISTE_FILE_END":
+							break
+						CLIENT.send("OK")
+						print (Reponse_List_User)
+
 				elif optionFTP == "2":
 					pass
 				elif optionFTP == "3":

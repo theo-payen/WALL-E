@@ -128,11 +128,10 @@ class Serveur():
 				if self.ROLE == "1":
 					if ACTION == "LISTE_ALL_USER":		
 						LISTE_USER = self.SQL.Get_all()
-						for x in LISTE_USER:
-							self.send(str(x))
+						for user in LISTE_USER:
+							self.send(str(user))
 							self.recv()
 						self.send("List_User_END")
-						del x
 
 					elif ACTION == "ADD_NEW_USER":
 						NEW_USER_LOGIN = MESSAGE_FROM_CLIENT[1]
@@ -198,10 +197,11 @@ class Serveur():
 						if self.SITE == "SIEGE":
 							
 							ftpdir = self.FTP_SIEGE.dir()
-							print("coucou")
-							print(ftpdir)
-							print(type(ftpdir))
-							self.send(str(ftpdir))
+
+							for file in ftpdir:
+								self.send(str(file))
+								self.recv()
+							self.send("LISTE_FILE_END")
 
 						elif self.SITE == "GRENOBLE":
 							self.FTP_GRENOBLE.dir()

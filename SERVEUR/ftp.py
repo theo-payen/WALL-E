@@ -26,8 +26,7 @@ class FTP():
 		#TODO: a tester
 		data = []
 		self.CONNECT.dir(data.append) # on récupère le listing
-		for line in data:
-			print ("salut", line)
+		return data
 	def rename(self,old_name,new_name):
 		return self.CONNECT.rename(old_name,new_name)
 	def delete(self,file):

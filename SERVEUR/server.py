@@ -195,20 +195,50 @@ class Serveur():
 					ACTION2 = MESSAGE_FROM_CLIENT[1]
 					if ACTION2 == "LISTE_FILE":
 						if self.SITE == "SIEGE":
-							
-							ftpdir = self.FTP_SIEGE.dir()
-
-							for file in ftpdir:
+							DIR_SIEGE = self.FTP_SIEGE.dir()
+							for file in DIR_SIEGE:
 								self.send(str(file))
 								self.recv()
 							self.send("LISTE_FILE_END")
 
 						elif self.SITE == "GRENOBLE":
-							self.FTP_GRENOBLE.dir()
+							DIR_GRENOBLE = self.FTP_GRENOBLE.dir()
+							for file in DIR_GRENOBLE:
+								self.send(str(file))
+								self.recv()
+							self.send("LISTE_FILE_END")
+
 						elif self.SITE == "RENNES":
-							self.FTP_RENNES.dir()
+							DIR_RENNES = self.FTP_RENNES.dir()
+							for file in DIR_RENNES:
+								self.send(str(file))
+								self.recv()
+							self.send("LISTE_FILE_END")
+
 						elif self.SITE == "STRASBOURG":
-							self.FTP_STRASBOURG.dir()
+							DIR_STRASBOURG = self.FTP_STRASBOURG.dir()
+							for file in DIR_STRASBOURG:
+								self.send(str(file))
+								self.recv()
+							self.send("LISTE_FILE_END")
+
+					elif ACTION2 == "DELET_FILE":
+						FILE_DELET = MESSAGE_FROM_CLIENT[2]
+						if self.SITE == "SIEGE":
+							self.FTP_SIEGE.delete(FILE_DELET)
+						elif self.SITE == "GRENOBLE":
+							self.FTP_GRENOBLE.delete(FILE_DELET)
+						elif self.SITE == "RENNES":
+							self.FTP_RENNES.delete(FILE_DELET)
+						elif self.SITE == "STRASBOURG":
+							self.FTP_STRASBOURG.delete(FILE_DELET)
+
+					elif ACTION2 == "":
+						pass
+					elif ACTION2 == "":
+						pass
+					elif ACTION2 == "":
+						pass
 
 
 

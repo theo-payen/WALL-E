@@ -14,14 +14,20 @@ class FTP():
 			return ftplib.FTP(IP,USER,PASSWORD)
 		except(ftplib.error_temp):
 			print("Erreur impossible de joindre le serveur FTP")
+	def upload (self,file) :
+		open_f = open(file, 'rb')
+		self.CONNECT.storbinary('STOR ' + file, open_f)
+		open_f.close()
 
-	def send_file(self,fichier):
+	def upload_file(self,fichier):
+		#TODO A FAIRE UPLOAD
 		file = open(fichier, 'rb')
 		self.CONNECT.storbinary('STOR '+fichier, file)
 		file.close()
+
 	def dowload_file(self,fichier):
-		with open(fichier, "rb") as file:
-			self.CONNECT.storbinary(f"STOR {fichier}", file)
+		with open(file, 'wb') as fp:
+			self.CONNECT.retrbinary('RETR %s' % fichier, fp.write)
 
 	def dir(self):
 		return self.CONNECT.dir()
@@ -331,11 +337,10 @@ while True:
 					New_FOLDER = input("NAME FOLDER")
 					FTP_SERVER.mkd(New_FOLDER)
 				elif optionFTP == "6":
-					#TODO A FAIRE
+					#TODO A FAIRE UPLOAD
 					upload_file = input("chemain du fichier")
-					FTP_SERVER.send_file(upload_file)
+					FTP_SERVER.upload(upload_file)
 				elif optionFTP == "7":
-					#TODO A FAIRE
 					Dowload_file = input("chemain du fichier")					
 					FTP_SERVER.dowload_file(Dowload_file)
 				elif optionFTP == "0":

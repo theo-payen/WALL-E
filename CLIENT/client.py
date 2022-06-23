@@ -1,11 +1,45 @@
-import socket , threading, hashlib , os, random, string, re, sys
+from ast import While
+import socket , threading, hashlib , os, random, string, re, sys, ftplib
 # TODO : TRIE LES IMPORT NON UTILISE
 
-def password_alleatoire():
-	length = 8
-	chars = string.ascii_letters + string.digits + '!@#$%^&*()'
-	random.seed = (os.urandom(1024))
-	return (''.join(random.choice(chars) for i in range(length)))
+class FTP():
+	def __init__(self,IP,USER,PASSWORD):
+		self.IP = IP
+		self.USER = USER
+		self.PASSWORD = PASSWORD
+		self.CONNECT = self.connect(self.IP,self.USER,self.PASSWORD)
+
+	def connect(self,IP,USER,PASSWORD):
+		try :
+			return ftplib.FTP(IP,USER,PASSWORD)
+		except(ftplib.error_temp):
+			print("Erreur impossible de joindre le serveur FTP")
+
+	def send_file(self,fichier):
+		file = open(fichier, 'rb')
+		self.CONNECT.storbinary('STOR '+fichier, file)
+		file.close()
+	def dowload_file(self,fichier):
+		with open(fichier, "rb") as file:
+			self.CONNECT.storbinary(f"STOR {fichier}", file)
+
+	def dir(self):
+		return self.CONNECT.dir()
+
+	def rename(self,old_name,new_name):
+		return self.CONNECT.rename(old_name,new_name)
+
+	def delete(self,file):
+		return self.CONNECT.delete(file)
+
+	def mkd(self,folder):
+		self.CONNECT.mkd(folder)
+
+	def rmd(self,folder):
+		self.CONNECT.rmd(folder)
+
+	def exit(self):
+		self.CONNECT.quit()
 
 
 
@@ -231,52 +265,86 @@ while True:
 			# * PUIS JE ME CONNECT
 
 			# * METTRE DANS LA CLASS FTP DANS LE SCRIPT
+			if ROLE == "1":
+				while True:
+					print("Choisir le site sur le quelle vous voulez vous connecter")
+					print("[1]     .SIEGE")
+					print("[2]     .RENNES")
+					print("[3]     .STRASBOURG")
+					print("[4]     .GRENOBLE")
+					print("[0]     .quitter")
+					optionSITE=input("?")
+
+					if optionSITE == "1":
+						CLIENT.send("FTP_CLIENT" + "," + "SIEGE")
+						break
+					elif optionSITE == "2":
+						CLIENT.send("FTP_CLIENT" + "," + "RENNES")
+						break
+					elif optionSITE == "3":
+						CLIENT.send("FTP_CLIENT" + "," + "STRASBOURG")
+						break
+					elif optionSITE == "4":
+						CLIENT.send("FTP_CLIENT" + "," + "GRENOBLE")
+						break
+					elif optionSITE == "0":
+						break
+					else:
+						pass
+			else:
+				CLIENT.send("FTP_CLIENT")
+
+			FTP_INFO_CONNECTION = CLIENT.recv().split(",")
+			FTP_IP = FTP_INFO_CONNECTION[0]
+			FTP_LOGIN = FTP_INFO_CONNECTION[1]
+			FTP_PASSWORD = FTP_INFO_CONNECTION[2]
+
+			FTP_SERVER = FTP(FTP_IP,FTP_LOGIN,FTP_PASSWORD)		
 			while True:
 				print("[1]     .afficher les fichier")
 				print("[2]     .supprimer un fichier")
-				print("[3]     .renomé un fichier")
-				print("[4]     .upload fichier")
-				print("[5]     .download fichier")
+				print("[3]     .supprimer un dossier")
+				print("[4]     .renomé un fichier")
+				print("[5]     .Crée un dossier")
+				print("[6]     .upload fichier")
+				print("[7]     .download fichier")
 				print("[0]     .quitter")
 				optionFTP=input("?")
 
 				if optionFTP == "1":
-					# LISTE FILE
-					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "LISTE_FILE")
-
-					while True:
-						Reponse_List_User = CLIENT.recv()
-						if Reponse_List_User == "LISTE_FILE_END":
-							break
-						CLIENT.send("OK")
-						print (Reponse_List_User)
-
+					FTP_SERVER.dir()
+					pass
 				elif optionFTP == "2":
 					# DELET FILE
 					Delete_name_file = input("saisir le nom du fichier a supprimé")
-					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "DELET_FILE" + "," + Delete_name_file)
+					FTP_SERVER.delete(Delete_name_file)
 				elif optionFTP == "3":
+					# DELET FILE
+					Delete_name_folder = input("saisir le nom du folder a supprimé")
+					FTP_SERVER.rmd(Delete_name_folder)
+				elif optionFTP == "4":
 					# rename file
 					old_rename_name_file = input("saisir le nom du fichier a renomé")
 					new_rename_name_file = input("saisir le nom nouveau non du fichier")
-					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "DELET_FILE" + "," + old_rename_name_file, + "," + new_rename_name_file)
-				elif optionFTP == "4":
+					FTP_SERVER.rename(old_rename_name_file,new_rename_name_file)
+				elif optionFTP == "5":
+					New_FOLDER = input("NAME FOLDER")
+					FTP_SERVER.mkd(New_FOLDER)
+				elif optionFTP == "6":
+					#TODO A FAIRE
 					upload_file = input("chemain du fichier")
-					upload_file = open(upload_file, 'rb') # ici, j'ouvre le fichier ftp.py 
-					print(type(upload_file),upload_file)
-					print(str(upload_file))
-					print(upload_file)
-					#connect.storbinary('STOR '+fichier, file) # ici (où connect est encore la variable de la connexion), j'indique le fichier à envoyer
-					upload_file.close() # on ferme le fichier
-					pass
-				elif option2 == "0":
+					FTP_SERVER.send_file(upload_file)
+				elif optionFTP == "7":
+					#TODO A FAIRE
+					Dowload_file = input("chemain du fichier")					
+					FTP_SERVER.dowload_file(Dowload_file)
+				elif optionFTP == "0":
 					break
 				else:	
 					print("error")
 
 		elif option == "3":
-			pass
-		elif option == "4":
+			# BACKUP
 			pass
 		elif option == "0":
 			CLIENT.send("CLOSE_CLIENT")

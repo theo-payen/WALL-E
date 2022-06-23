@@ -1,5 +1,5 @@
 import socket , threading, hashlib , os, random, string, re, sys
-
+# TODO : TRIE LES IMPORT NON UTILISE
 
 def password_alleatoire():
 	length = 8
@@ -197,8 +197,8 @@ while True:
 						CLIENT.send("DELET_USER" + "," + Del_ID)
 
 					elif option2 == "5":
+						# TODO A FAIRE
 						CLIENT.send("TOOLS")
-
 
 					elif option2 == "6":
 						CLIENT.send("STOP_SERVER")
@@ -226,6 +226,11 @@ while True:
 					break
 		elif option == "2":
 			#FTP
+			######### TODO FTP ###########
+			# * DEMANDE AU SERVER LE MDP DU SERVER FTP AU QUELLE J'AI ACCES
+			# * PUIS JE ME CONNECT
+
+			# * METTRE DANS LA CLASS FTP DANS LE SCRIPT
 			while True:
 				print("[1]     .afficher les fichier")
 				print("[2]     .supprimer un fichier")
@@ -234,6 +239,7 @@ while True:
 				print("[5]     .download fichier")
 				print("[0]     .quitter")
 				optionFTP=input("?")
+
 				if optionFTP == "1":
 					# LISTE FILE
 					CLIENT.send("FTP_CLIENT" + "," + "null" + "," + "LISTE_FILE")

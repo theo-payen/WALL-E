@@ -95,14 +95,12 @@ class SQL():
 	def Search_ID(self,LOGIN):
 		return self.QueryCurs.execute("SELECT ID FROM Utilisateur WHERE LOGIN=?",(LOGIN,),).fetchall()
 
+	# supprimer
+	def Del_User(self,ID):
+		self.QueryCurs.execute("DELETE FROM Utilisateur WHERE ID = ?",(ID,),).fetchall()
+		self.commit()
 
 if __name__ == '__main__':
 	print ("veillez importer le script")
-
-	DATA_BASE = "DataBase.db"
-	SQL = SQL(DATA_BASE)
-	print(SQL.Get_all())
-
-
 else:
 	print ("Le script SQL a été importer avec succès")

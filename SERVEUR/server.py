@@ -144,9 +144,12 @@ class Serveur():
 
 						self.SQL.New_User(NEW_USER_LOGIN,NEW_USER_PASSWORD,NEW_USER_ROLE,NEW_USER_NOM,NEW_USER_PRENOM,NEW_USER_SITE)
 					elif ACTION == "EDIT_USER":
-						ACTION2 = MESSAGE_FROM_CLIENT[1]
-						VALUE = MESSAGE_FROM_CLIENT[2]
-						ID_UPDATE = MESSAGE_FROM_CLIENT[3]
+						try:
+							ACTION2 = MESSAGE_FROM_CLIENT[1]
+							VALUE = MESSAGE_FROM_CLIENT[2]
+							ID_UPDATE = MESSAGE_FROM_CLIENT[3]
+						except:
+							print("error")
 
 						print(ACTION2,ID_UPDATE,VALUE)
 						if ACTION2 == "CHANGE_LOGIN_USER":
@@ -164,7 +167,8 @@ class Serveur():
 						else:
 							self.logging.warning("ACTION inconue:" + ACTION2)
 					elif ACTION == "DELET_USER":
-						pass
+						ID_DELET = MESSAGE_FROM_CLIENT[1]
+						self.SQL.Del_User(ID_DELET)
 					# TODO: a faire
 					elif ACTION == "TOOLS":
 						TOOLS = MESSAGE_FROM_CLIENT[1]
@@ -175,7 +179,9 @@ class Serveur():
 						elif TOOLS == "scan port":
 							pass
 					elif ACTION == "STOP_SERVER":
+						self.close()
 						self.closeServer()
+						sys.exit()
 
 				#FIN DROIT ADMIN
 
@@ -259,7 +265,9 @@ class Serveur():
 					self.logging.info("STOP CLIENT")
 					self.close()
 					break
-
+				else:
+					print("ERROR")
+			# FIN BLOUCLE INFINI
 					"""
 					if ACTION == "SERVEUR MAINTENANCE":
 						self.logging.critical("SERVEUR MAINTENANCE")
@@ -269,10 +277,7 @@ class Serveur():
 						break
 					"""
 
-
-				break
-
-			self.close()
+				
 
 
 if __name__ == '__main__':

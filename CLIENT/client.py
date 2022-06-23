@@ -189,14 +189,21 @@ while True:
 								print ("quiter")
 								break
 							else:
-								print("\n choix non valide veuillez saisir une option ") 
-								pass
+								print("\n choix non valide veuillez saisir une option ")
+
 					elif option2 == "4":
 						#DELET USER
-						pass
+						Del_ID = input("slect l'id de l'utilisateur :")
+						CLIENT.send("DELET_USER" + "," + Del_ID)
+
 					elif option2 == "5":
+						CLIENT.send("TOOLS")
+
+
+					elif option2 == "6":
 						CLIENT.send("STOP_SERVER")
 						sys.exit()
+
 					elif option2 == "0":
 						break
 					else:

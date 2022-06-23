@@ -26,7 +26,7 @@ class FTP():
 		file.close()
 
 	def dowload_file(self,fichier):
-		with open(file, 'wb') as fp:
+		with open(fichier, 'wb') as fp:
 			self.CONNECT.retrbinary('RETR %s' % fichier, fp.write)
 
 	def dir(self):

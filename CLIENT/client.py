@@ -1,5 +1,5 @@
-from ast import While
-import socket , threading, hashlib , os, random, string, re, sys, ftplib
+import socket , threading, hashlib , os, random, string, re, sys, ftplib, shutil
+from datetime import datetime
 # TODO : TRIE LES IMPORT NON UTILISE
 
 class FTP():
@@ -43,6 +43,10 @@ class FTP():
 
 	def rmd(self,folder):
 		self.CONNECT.rmd(folder)
+	def  nlst(self):
+		return self.CONNECT.nlst()
+	def retrbinary(self,file,file2):
+		self.CONNECT.retrbinary(file,file2)
 
 	def exit(self):
 		self.CONNECT.quit()
@@ -307,50 +311,135 @@ while True:
 
 			FTP_SERVER = FTP(FTP_IP,FTP_LOGIN,FTP_PASSWORD)		
 			while True:
-				print("[1]     .afficher les fichier")
-				print("[2]     .supprimer un fichier")
-				print("[3]     .supprimer un dossier")
-				print("[4]     .renomé un fichier")
-				print("[5]     .Crée un dossier")
-				print("[6]     .upload fichier")
-				print("[7]     .download fichier")
-				print("[0]     .quitter")
+
+				print("[1]		.afficher les fichier")
+				print("[2]		.supprimer un fichier")
+				print("[3]		.supprimer un dossier")
+				print("[4]		.renomé un fichier")
+				print("[5]		.Crée un dossier")
+				print("[6]		.upload fichier")
+				print("[7]		.download fichier")
+				print("[0]		.quitter")
 				optionFTP=input("?")
 
 				if optionFTP == "1":
 					FTP_SERVER.dir()
-					pass
+
 				elif optionFTP == "2":
 					# DELET FILE
 					Delete_name_file = input("saisir le nom du fichier a supprimé")
 					FTP_SERVER.delete(Delete_name_file)
+
 				elif optionFTP == "3":
 					# DELET FILE
 					Delete_name_folder = input("saisir le nom du folder a supprimé")
 					FTP_SERVER.rmd(Delete_name_folder)
+
 				elif optionFTP == "4":
 					# rename file
 					old_rename_name_file = input("saisir le nom du fichier a renomé")
 					new_rename_name_file = input("saisir le nom nouveau non du fichier")
 					FTP_SERVER.rename(old_rename_name_file,new_rename_name_file)
+
 				elif optionFTP == "5":
 					New_FOLDER = input("NAME FOLDER")
 					FTP_SERVER.mkd(New_FOLDER)
+
 				elif optionFTP == "6":
 					#TODO A FAIRE UPLOAD
 					upload_file = input("chemain du fichier")
 					FTP_SERVER.upload(upload_file)
+
 				elif optionFTP == "7":
+					print("download file")
 					Dowload_file = input("chemain du fichier")					
 					FTP_SERVER.dowload_file(Dowload_file)
+
 				elif optionFTP == "0":
-					break
+					FTP_SERVER.close()
+
 				else:	
-					print("error")
+					print("pas le bon nombre")
 
 		elif option == "3":
-			# BACKUP
-			pass
+			#BACKUP
+
+			if ROLE == "1":
+				while True:
+					print("Choisir le site sur le quelle vous voulez vous connecter")
+					print("[1]     .SIEGE")
+					print("[2]     .RENNES")
+					print("[3]     .STRASBOURG")
+					print("[4]     .GRENOBLE")
+					print("[0]     .quitter")
+					optionSITE=input("?")
+
+					if optionSITE == "1":
+						CLIENT.send("BACKUP" + "," + "SIEGE")
+						break
+					elif optionSITE == "2":
+						CLIENT.send("BACKUP" + "," + "RENNES")
+						break
+					elif optionSITE == "3":
+						CLIENT.send("BACKUP" + "," + "STRASBOURG")
+						break
+					elif optionSITE == "4":
+						CLIENT.send("BACKUP" + "," + "GRENOBLE")
+						break
+					elif optionSITE == "0":
+						break
+					else:
+						pass
+			else:
+				CLIENT.send("BACKUP")
+
+
+			BACKUP_INFO_CONNECTION = CLIENT.recv().split(",")
+			BACKUP_IP = BACKUP_INFO_CONNECTION[0]
+			BACKUP_LOGIN = BACKUP_INFO_CONNECTION[1]
+			BACKUP_PASSWORD = BACKUP_INFO_CONNECTION[2]
+
+			BACKUP_SERVER = FTP(BACKUP_IP,BACKUP_LOGIN,BACKUP_PASSWORD)
+			folder_backup = "BACKUP/" + BACKUP_LOGIN + "/" 
+			while True:
+
+				print("[1]		.afficher les fichier")
+				print("[2]		.afficher les backup")
+				print("[3]		.backup les fichier")
+				print("[4]		.supprimé une backup")
+				print("[0]		.quitter")
+				option_BACKUP=input("?")
+
+				if option_BACKUP == "1":
+					BACKUP_SERVER.dir()
+
+				elif option_BACKUP == "2":
+					print (os.listdir(folder_backup))
+
+				elif option_BACKUP == "3":
+					date = f'{datetime.now():%m_%d_%Y-%H_%M_%S}'
+
+					folder = folder_backup + date + "/"
+					os.makedirs(folder)
+					files = BACKUP_SERVER.nlst()
+					for file in files:
+						BACKUP_SERVER.retrbinary("RETR " + file ,open(folder + file, 'wb').write)
+
+					shutil.make_archive(folder, 'zip', folder)
+					shutil.rmtree(folder)
+					BACKUP_SERVER.exit()
+
+				elif option_BACKUP == "4":
+					print("nom du dossierra supprimé")
+					shutil.rmtree(folder)
+				elif option_BACKUP == "0":
+					break
+				else:
+					print("pas bon")
+
+
+
+
 		elif option == "0":
 			CLIENT.send("CLOSE_CLIENT")
 			print("exit")

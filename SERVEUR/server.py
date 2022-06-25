@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from sqlite3 import connect
 from sql import SQL
 from tools import TOOLS
 from logging import Logging
@@ -142,6 +143,7 @@ class Serveur():
 							self.recv()
 						self.send("List_User_END")
 						del user
+						continue
 
 					elif ACTION == "ADD_NEW_USER":
 						NEW_USER_LOGIN = MESSAGE_FROM_CLIENT[1]
@@ -152,6 +154,7 @@ class Serveur():
 						NEW_USER_SITE = MESSAGE_FROM_CLIENT[6]
 
 						self.SQL.New_User(NEW_USER_LOGIN,NEW_USER_PASSWORD,NEW_USER_ROLE,NEW_USER_NOM,NEW_USER_PRENOM,NEW_USER_SITE)
+						continue
 					elif ACTION == "EDIT_USER":
 						try:
 							ACTION2 = MESSAGE_FROM_CLIENT[1]
@@ -175,11 +178,14 @@ class Serveur():
 							self.SQL.Update_SITE(VALUE,ID_UPDATE)
 						else:
 							self.logging.warning("ACTION inconue:" + ACTION2)
+						continue
 					elif ACTION == "DELET_USER":
 						ID_DELET = MESSAGE_FROM_CLIENT[1]
 						self.SQL.Del_User(ID_DELET)
-					# TODO: a faire
+						continue
+
 					elif ACTION == "TOOLS":
+						# TODO: a faire						
 						TOOLS = MESSAGE_FROM_CLIENT[1]
 						if TOOLS == "Brute force":
 							pass
@@ -187,6 +193,7 @@ class Serveur():
 							pass
 						elif TOOLS == "scan port":
 							pass
+						continue
 					elif ACTION == "STOP_SERVER":
 						self.close()
 						self.closeServer()
@@ -197,11 +204,11 @@ class Serveur():
 				if ACTION == "CHANGE_PASSWORD":
 					ACTION2 = MESSAGE_FROM_CLIENT[1]
 					self.SQL.Update_PASSWORD(ACTION2,self.ID)
-					pass
+					continue
 				#FIXME:
 				#TODO A METTRE TOUTE LA PARTIE FTP VERS LE CLIENT
 				# TODO: viré tous
-				elif ACTION == "FTP_CLIENT":
+				elif ACTION == "FTP_CLIENT" or ACTION == "BACKUP":
 					if self.ROLE == "1":
 						# ADMIN
 						SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
@@ -216,6 +223,7 @@ class Serveur():
 
 						elif SITE_FOR_ADMIN == "STRASBOURG":
 							self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
+						continue
 					else:
 						# NO ADMIN
 						if self.SITE == "SIEGE":
@@ -229,9 +237,8 @@ class Serveur():
 
 						elif self.SITE == "STRASBOURG":
 							self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
+						continue
 
-				elif ACTION == "BACKUP":
-					pass	
 				elif ACTION == "CLOSE_CLIENT":
 					self.logging.info("STOP CLIENT")
 					self.close()

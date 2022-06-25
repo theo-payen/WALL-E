@@ -35,6 +35,7 @@ class TOOLS():
 
 
 	def BruteForce_dico (self,file):
+		USER = "root"
 		try :
 			ftplib.FTP(IP,USER,PASSWORD)
 		except(ConnectionRefusedError):

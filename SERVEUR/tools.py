@@ -35,7 +35,14 @@ class TOOLS():
 
 
 	def BruteForce_dico (self,file):
-		pass
+		try :
+			ftplib.FTP(IP,USER,PASSWORD)
+		except(ConnectionRefusedError):
+			print("port fermé")
+		except(ftplib.error_perm):
+			print("impoissible de se log")
+		else:
+			print ("ok")
 
 	def ScanPorts (self,IP,port_min,port_max):
 		def Scan(IP,port):

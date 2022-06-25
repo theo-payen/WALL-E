@@ -110,26 +110,32 @@ class Serveur():
 
 		self.DATA_USER = str(self.SQL.Search_LOGIN_and_PASSWORD(self.RECV_LOGIN))
 		characters_a_supprimé = "()[]' "
+		try:
+			for x in range(len(characters_a_supprimé)):
+				self.DATA_USER = self.DATA_USER.replace(characters_a_supprimé[x],"")
+			self.DATA_USER = self.DATA_USER.split(",")
 
-		for x in range(len(characters_a_supprimé)):
-			self.DATA_USER = self.DATA_USER.replace(characters_a_supprimé[x],"")
-		self.DATA_USER = self.DATA_USER.split(",")
-
-		self.ID = self.DATA_USER[0]
-		self.LOGIN = self.DATA_USER[1]
-		self.PASSWORD = self.DATA_USER[2]
-		self.ROLE = self.DATA_USER[3]
-		self.NOM = self.DATA_USER[4]
-		self.PRENOM = self.DATA_USER[5]
-		self.SITE = self.DATA_USER[6]
-
-		if self.RECV_LOGIN is None or self.RECV_PASSWORD is None or not self.RECV_LOGIN in self.LOGIN or not self.RECV_PASSWORD in self.PASSWORD:
+			self.ID = self.DATA_USER[0]
+			self.LOGIN = self.DATA_USER[1]
+			self.PASSWORD = self.DATA_USER[2]
+			self.ROLE = self.DATA_USER[3]
+			self.NOM = self.DATA_USER[4]
+			self.PRENOM = self.DATA_USER[5]
+			self.SITE = self.DATA_USER[6]
+		except:
+			print("erreur conection")
+		try:
+			if self.RECV_LOGIN is None or self.RECV_PASSWORD is None or not self.RECV_LOGIN in self.LOGIN or not self.RECV_PASSWORD in self.PASSWORD:
+				self.send("ERROR_CONNECTION")
+				self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
+				self.close()
+			else:
+				self.send("APPROUVE" + "," + self.LOGIN + "," + self.ROLE + "," + self.NOM + "," +self.PRENOM + "," + self.SITE)
+				self.logging.info("CONNECTION APPROUVE FOR " + self.LOGIN)
+		except:
 			self.send("ERROR_CONNECTION")
 			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
 			self.close()
-		else:
-			self.send("APPROUVE" + "," + self.LOGIN + "," + self.ROLE + "," + self.NOM + "," +self.PRENOM + "," + self.SITE)
-			self.logging.info("CONNECTION APPROUVE FOR " + self.LOGIN)
 
 			while True:
 				MESSAGE_FROM_CLIENT = self.recv().split(",")

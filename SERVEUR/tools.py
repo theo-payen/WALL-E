@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from itertools import chain
 from logging import Logging
 import threading, socket, ftplib, re
 
@@ -22,10 +23,10 @@ class TOOLS():
 	#TODO : sur le ftp
 	def BruteForce (self,IP,nombre_caractaire):
 
-		USER = "siege"
-		PASSWORD = "siege"
+		USER = "root"
+
 		try :
-			ftplib.FTP(IP,USER,PASSWORD)
+			ftplib.FTP(IP,USER,nombre_caractaire)
 		except(ConnectionRefusedError):
 			print("port fermé")
 		except(ftplib.error_perm):
@@ -67,12 +68,28 @@ if __name__ == '__main__':
 	IP = "172.20.20.35"
 	boite_a_outils.BruteForce(IP,0)
 
-	LETRE="ABCD"
+	LETRE="ABCDC"
 	list=[]
 	list[:0]=LETRE
-	for list in letre:
-		pass
-	print(list)
+
+
+	for l in list:
+		chaine = l
+		print (chaine)
+		for l2 in list:
+			chaine = l + l2
+			print (chaine)
+			for l3 in list:
+				chaine = l + l2 + l3
+				print (chaine)
+				for l4 in list:
+					chaine = l + l2 + l3 + l4
+					print (chaine)
+					for l5 in list:
+						chaine = l + l2 + l3 + l4 + l5
+						print (chaine)
+
+
 
 	# Driver code
 	

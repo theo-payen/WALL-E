@@ -215,6 +215,7 @@ class Serveur():
 				#TODO A METTRE TOUTE LA PARTIE FTP VERS LE CLIENT
 				# TODO: viré tous
 				elif ACTION == "FTP_CLIENT" or ACTION == "BACKUP":
+					print ("test")
 					if self.ROLE == "1":
 						# ADMIN
 						SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
@@ -229,7 +230,7 @@ class Serveur():
 
 						elif SITE_FOR_ADMIN == "STRASBOURG":
 							self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
-						continue
+
 					else:
 						# NO ADMIN
 						if self.SITE == "SIEGE":
@@ -243,7 +244,6 @@ class Serveur():
 
 						elif self.SITE == "STRASBOURG":
 							self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
-						continue
 
 				elif ACTION == "CLOSE_CLIENT":
 					self.logging.info("STOP CLIENT")

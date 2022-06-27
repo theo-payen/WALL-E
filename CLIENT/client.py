@@ -1,4 +1,4 @@
-import socket , threading, hashlib , os, random, string, re, sys, ftplib, shutil
+import socket , hashlib , os, re, sys, ftplib, shutil
 from datetime import datetime
 # TODO : TRIE LES IMPORT NON UTILISE
 
@@ -261,7 +261,7 @@ while True:
 				NEW_PASSWORD = input("saisir votre nouveau mots de passe:\n->")
 				NEW_PASSWORD2 = input("Valider votre nouveau mots de passe:\n->")
 
-				if not NEW_PASSWORD == NEW_PASSWORD2 or CLIENT.password_check == False:
+				if not NEW_PASSWORD == NEW_PASSWORD2 and CLIENT.password_check == False:
 					print("Une erreur est survenu veillez retester")
 				elif OLD_PASSWORD == "0" or NEW_PASSWORD == "0" or NEW_PASSWORD2 == "0":
 					break
@@ -270,11 +270,6 @@ while True:
 					break
 		elif option == "2":
 			#FTP
-			######### TODO FTP ###########
-			# * DEMANDE AU SERVER LE MDP DU SERVER FTP AU QUELLE J'AI ACCES
-			# * PUIS JE ME CONNECT
-
-			# * METTRE DANS LA CLASS FTP DANS LE SCRIPT
 			if ROLE == "1":
 				while True:
 					print("Choisir le site sur le quelle vous voulez vous connecter")
@@ -346,7 +341,6 @@ while True:
 					FTP_SERVER.mkd(New_FOLDER)
 
 				elif optionFTP == "6":
-					#TODO A FAIRE UPLOAD
 					upload_file = input("chemain du fichier")
 					FTP_SERVER.upload(upload_file)
 
@@ -362,6 +356,7 @@ while True:
 					print("pas le bon nombre")
 
 		elif option == "3":
+			#TODO : BACKUP METTRE SUR SERVER
 			#BACKUP
 
 			if ROLE == "1":

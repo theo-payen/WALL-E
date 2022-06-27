@@ -137,135 +137,132 @@ class Serveur():
 			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
 			self.close()
 
-			while True:
-				MESSAGE_FROM_CLIENT = self.recv().split(",")
-				ACTION = MESSAGE_FROM_CLIENT[0]
-				self.logging.info("ACTION "+ ACTION + " PAR " + self.LOGIN)
-				if self.ROLE == "1":
-					if ACTION == "LISTE_ALL_USER":		
-						LISTE_USER = self.SQL.Get_all()
-						for user in LISTE_USER:
-							self.send(str(user))
-							self.recv()
-						self.send("List_User_END")
-						del user
-						continue
+		while True:
+			MESSAGE_FROM_CLIENT = self.recv().split(",")
+			ACTION = MESSAGE_FROM_CLIENT[0]
+			self.logging.info("ACTION "+ ACTION + " PAR " + self.LOGIN)
+			if self.ROLE == "1":
+				if ACTION == "LISTE_ALL_USER":		
+					LISTE_USER = self.SQL.Get_all()
+					for user in LISTE_USER:
+						self.send(str(user))
+						self.recv()
+					self.send("List_User_END")
+					del user
+					continue
 
-					elif ACTION == "ADD_NEW_USER":
-						NEW_USER_LOGIN = MESSAGE_FROM_CLIENT[1]
-						NEW_USER_PASSWORD = MESSAGE_FROM_CLIENT[2]
-						NEW_USER_ROLE = MESSAGE_FROM_CLIENT[3]
-						NEW_USER_NOM = MESSAGE_FROM_CLIENT[4]
-						NEW_USER_PRENOM = MESSAGE_FROM_CLIENT[5]
-						NEW_USER_SITE = MESSAGE_FROM_CLIENT[6]
+				elif ACTION == "ADD_NEW_USER":
+					NEW_USER_LOGIN = MESSAGE_FROM_CLIENT[1]
+					NEW_USER_PASSWORD = MESSAGE_FROM_CLIENT[2]
+					NEW_USER_ROLE = MESSAGE_FROM_CLIENT[3]
+					NEW_USER_NOM = MESSAGE_FROM_CLIENT[4]
+					NEW_USER_PRENOM = MESSAGE_FROM_CLIENT[5]
+					NEW_USER_SITE = MESSAGE_FROM_CLIENT[6]
 
-						self.SQL.New_User(NEW_USER_LOGIN,NEW_USER_PASSWORD,NEW_USER_ROLE,NEW_USER_NOM,NEW_USER_PRENOM,NEW_USER_SITE)
-						continue
-					elif ACTION == "EDIT_USER":
-						try:
-							ACTION2 = MESSAGE_FROM_CLIENT[1]
-							VALUE = MESSAGE_FROM_CLIENT[2]
-							ID_UPDATE = MESSAGE_FROM_CLIENT[3]
-						except:
-							print("error")
+					self.SQL.New_User(NEW_USER_LOGIN,NEW_USER_PASSWORD,NEW_USER_ROLE,NEW_USER_NOM,NEW_USER_PRENOM,NEW_USER_SITE)
+					continue
+				elif ACTION == "EDIT_USER":
+					try:
+						ACTION2 = MESSAGE_FROM_CLIENT[1]
+						VALUE = MESSAGE_FROM_CLIENT[2]
+						ID_UPDATE = MESSAGE_FROM_CLIENT[3]
+					except:
+						print("error")
 
-						print(ACTION2,ID_UPDATE,VALUE)
-						if ACTION2 == "CHANGE_LOGIN_USER":
-							self.SQL.Update_LOGIN(VALUE,ID_UPDATE)
-						elif ACTION2 == "CHANGE_PASSWORD_USER":
-							self.SQL.Update_PASSWORD(VALUE,ID_UPDATE)
-						elif ACTION2 == "CHANGE_ROLE_USER":
-							self.SQL.Update_ROLE(VALUE,ID_UPDATE)
-						elif ACTION2 == "CHANGE_NOM_USER":
-							self.SQL.Update_NOM(VALUE,ID_UPDATE)
-						elif ACTION2 == "CHANGE_PRENOM_USER":
-							self.SQL.Update_PRENOM(VALUE,ID_UPDATE)
-						elif ACTION2 == "CHANGE_SITE_USER":
-							self.SQL.Update_SITE(VALUE,ID_UPDATE)
-						else:
-							self.logging.warning("ACTION inconue:" + ACTION2)
-						continue
-					elif ACTION == "DELET_USER":
-						ID_DELET = MESSAGE_FROM_CLIENT[1]
-						self.SQL.Del_User(ID_DELET)
-						continue
+					print(ACTION2,ID_UPDATE,VALUE)
+					if ACTION2 == "CHANGE_LOGIN_USER":
+						self.SQL.Update_LOGIN(VALUE,ID_UPDATE)
+					elif ACTION2 == "CHANGE_PASSWORD_USER":
+						self.SQL.Update_PASSWORD(VALUE,ID_UPDATE)
+					elif ACTION2 == "CHANGE_ROLE_USER":
+						self.SQL.Update_ROLE(VALUE,ID_UPDATE)
+					elif ACTION2 == "CHANGE_NOM_USER":
+						self.SQL.Update_NOM(VALUE,ID_UPDATE)
+					elif ACTION2 == "CHANGE_PRENOM_USER":
+						self.SQL.Update_PRENOM(VALUE,ID_UPDATE)
+					elif ACTION2 == "CHANGE_SITE_USER":
+						self.SQL.Update_SITE(VALUE,ID_UPDATE)
+					else:
+						self.logging.warning("ACTION inconue:" + ACTION2)
+					continue
+				elif ACTION == "DELET_USER":
+					ID_DELET = MESSAGE_FROM_CLIENT[1]
+					self.SQL.Del_User(ID_DELET)
+					continue
 
-					elif ACTION == "TOOLS":
-						# TODO: a faire						
-						TOOLS = MESSAGE_FROM_CLIENT[1]
-						if TOOLS == "Brute force":
-							pass
-						elif TOOLS == "Brute force dico":
-							pass
-						elif TOOLS == "scan port":
-							pass
+				elif ACTION == "TOOLS":
+					# TODO: a faire						
+					TOOLS = MESSAGE_FROM_CLIENT[1]
+					if TOOLS == "Brute force":
+						pass
+					elif TOOLS == "Brute force dico":
+						pass
+					elif TOOLS == "scan port":
+						pass
 						continue
-					elif ACTION == "STOP_SERVER":
-						self.close()
-						self.closeServer()
-						sys.exit()
+				elif ACTION == "STOP_SERVER":
+					self.close()
+					self.closeServer()
+					sys.exit()
 
 				#FIN DROIT ADMIN
 
-				if ACTION == "CHANGE_PASSWORD":
-					ACTION2 = MESSAGE_FROM_CLIENT[1]
-					self.SQL.Update_PASSWORD(ACTION2,self.ID)
-					continue
+			if ACTION == "CHANGE_PASSWORD":
+				ACTION2 = MESSAGE_FROM_CLIENT[1]
+				self.SQL.Update_PASSWORD(ACTION2,self.ID)
+
 				#FIXME:
 				#TODO A METTRE TOUTE LA PARTIE FTP VERS LE CLIENT
 				# TODO: viré tous
-				elif ACTION == "FTP_CLIENT" or ACTION == "BACKUP":
-					print ("test")
-					if self.ROLE == "1":
-						# ADMIN
-						SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
-						if SITE_FOR_ADMIN == "SIEGE":
-							self.send(self.FTP_IP_SIEGE + "," + self.FTP_LOGIN_SIEGE + "," + self.FTP_PASSWORD_SIEGE)
+			elif ACTION == "FTP_CLIENT" or ACTION == "BACKUP":
+				print ("test")
+				if self.ROLE == "1":
+					# ADMIN
+					SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
+					if SITE_FOR_ADMIN == "SIEGE":
+						self.send(self.FTP_IP_SIEGE + "," + self.FTP_LOGIN_SIEGE + "," + self.FTP_PASSWORD_SIEGE)
 
-						elif SITE_FOR_ADMIN == "GRENOBLE":
-							self.send(self.FTP_IP_GRENOBLE + "," + self.FTP_LOGIN_GRENOBLE + "," + self.FTP_PASSWORD_GRENOBLE)
+					elif SITE_FOR_ADMIN == "GRENOBLE":
+						self.send(self.FTP_IP_GRENOBLE + "," + self.FTP_LOGIN_GRENOBLE + "," + self.FTP_PASSWORD_GRENOBLE)
 
-						elif SITE_FOR_ADMIN == "RENNES":
-							self.send(self.FTP_IP_RENNES + "," + self.FTP_LOGIN_RENNES + "," + self.FTP_PASSWORD_RENNES)
+					elif SITE_FOR_ADMIN == "RENNES":
+						self.send(self.FTP_IP_RENNES + "," + self.FTP_LOGIN_RENNES + "," + self.FTP_PASSWORD_RENNES)
 
-						elif SITE_FOR_ADMIN == "STRASBOURG":
-							self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
+					elif SITE_FOR_ADMIN == "STRASBOURG":
+						self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
 
-					else:
-						# NO ADMIN
-						if self.SITE == "SIEGE":
-							self.send(self.FTP_IP_SIEGE + "," + self.FTP_LOGIN_SIEGE + "," + self.FTP_PASSWORD_SIEGE)
-
-						elif self.SITE == "GRENOBLE":
-							self.send(self.FTP_IP_GRENOBLE + "," + self.FTP_LOGIN_GRENOBLE + "," + self.FTP_PASSWORD_GRENOBLE)
-
-						elif self.SITE == "RENNES":
-							self.send(self.FTP_IP_RENNES + "," + self.FTP_LOGIN_RENNES + "," + self.FTP_PASSWORD_RENNES)
-
-						elif self.SITE == "STRASBOURG":
-							self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
-
-				elif ACTION == "CLOSE_CLIENT":
-					self.logging.info("STOP CLIENT")
-					self.close()
-					break
 				else:
-					print(ACTION,"ERROR")
-					self.close()
-					break
+						# NO ADMIN
+					if self.SITE == "SIEGE":
+						self.send(self.FTP_IP_SIEGE + "," + self.FTP_LOGIN_SIEGE + "," + self.FTP_PASSWORD_SIEGE)
+
+					elif self.SITE == "GRENOBLE":
+						self.send(self.FTP_IP_GRENOBLE + "," + self.FTP_LOGIN_GRENOBLE + "," + self.FTP_PASSWORD_GRENOBLE)
+
+					elif self.SITE == "RENNES":
+						self.send(self.FTP_IP_RENNES + "," + self.FTP_LOGIN_RENNES + "," + self.FTP_PASSWORD_RENNES)
+
+					elif self.SITE == "STRASBOURG":
+						self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
+
+			elif ACTION == "CLOSE_CLIENT":
+				self.logging.info("STOP CLIENT")
+				self.close()
+				break
+			else:
+				print(ACTION,"ERROR")
+				self.close()
+				break
 					
 			# FIN BLOUCLE INFINI
-					"""
+				"""
 					if ACTION == "SERVEUR MAINTENANCE":
 						self.logging.critical("SERVEUR MAINTENANCE")
 						self.All_users("SERVER MAINTENANCE")
 						self.logging.critical("STOP SERVEUR")
 						self.closeServer()
 						break
-					"""
-
-				
-
+				"""
 
 if __name__ == '__main__':
 	print ("veillez importer le script")

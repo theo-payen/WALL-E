@@ -96,7 +96,7 @@ class CLIENT:
 	"""
 
 
-IP = "localhost"
+IP = "127.0.0.1"
 PORT = 3401
 CLIENT = CLIENT(IP,PORT)
 
@@ -220,7 +220,7 @@ while True:
 							elif modif_option == "4":
 								Modif_NOM =input ("modif nom: ")
 								CLIENT.send("EDIT_USER" + "," + "CHANGE_NOM_USER"+ Modif_NOM + "," + Modif_ID)
-    
+	
 							elif modif_option == "5":
 								Modif_PRENOM =input ("modif prenom: ")
 								CLIENT.send("EDIT_USER" + "," + "CHANGE_PRENOM_USER"+ "," + Modif_PRENOM + "," + Modif_ID)
@@ -350,10 +350,11 @@ while True:
 					FTP_SERVER.dowload_file(Dowload_file)
 
 				elif optionFTP == "0":
-					FTP_SERVER.close()
+					FTP_SERVER.exit()
+					break
 
 				else:	
-					print("pas le bon nombre")
+					print("veillez retester")
 
 		elif option == "3":
 			#TODO : BACKUP METTRE SUR SERVER
@@ -422,12 +423,12 @@ while True:
 
 					shutil.make_archive(folder, 'zip', folder)
 					shutil.rmtree(folder)
-					BACKUP_SERVER.exit()
 
 				elif option_BACKUP == "4":
 					print("nom du dossierra supprimé")
 					shutil.rmtree(folder)
 				elif option_BACKUP == "0":
+					BACKUP_SERVER.exit()
 					break
 				else:
 					print("pas bon")

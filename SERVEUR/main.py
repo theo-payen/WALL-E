@@ -2,7 +2,7 @@
 from server import Serveur
 import threading
 
-IP = "localhost"
+IP = "127.0.0.1"
 PORT = 3401
 DATA_BASE = "DataBase.db"
 

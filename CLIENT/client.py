@@ -16,14 +16,13 @@ class FTP():
 			print("Erreur impossible de joindre le serveur FTP")
 	def upload (self,file) :
 		open_f = open(file, 'rb')
-		self.CONNECT.storbinary('STOR ' + file, open_f)
+		self.CONNECT.storbinary(f'STOR {file}', open_f)
 		open_f.close()
 
 	def upload_file(self,fichier):
-		#TODO A FAIRE UPLOAD
-		file = open(fichier, 'rb')
-		self.CONNECT.storbinary('STOR '+fichier, file)
-		file.close()
+		open_f = open(file, 'rb')
+		self.CONNECT.storbinary(f'STOR {file}', open_f)
+		open_f.close()
 
 	def dowload_file(self,fichier):
 		with open(fichier, 'wb') as fp:

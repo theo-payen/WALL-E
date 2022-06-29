@@ -242,7 +242,53 @@ while True:
 
 					elif option2 == "5":
 						# TODO A FAIRE
-						CLIENT.send("TOOLS")
+						while True:
+							print("Choisir le site sur le quelle vous voulez vous connecter")
+							print("[1]     .scan port")
+							print("[2]     .Voir mes scan")
+							print("[0]     .quitter")
+							optionTOOLS=input("?")
+							if optionTOOLS == "1":
+								while True:
+									print("scanner 1 ou plusieur portr")
+									print("[1]     .1 port")
+									print("[2]     .plusieurs port")
+									optionSCAN=input("?")
+									ip = input("entrer l'ip du server a scanner")
+									if optionSCAN == "1":
+										port = input("le port a scanner")
+										CLIENT.send("TOOLS" + "," + "SCAN_PORT" + "," + ip + "," + port + "," + port)
+										NAME_EXPORT = CLIENT.recv()
+										print ("SCAN en cours retrouver votre scan dans le rapport", NAME_EXPORT)
+									elif optionSCAN == "2":
+										min_port = input("le port min a scanner")
+										max_port = input("le port max a scanner")
+										CLIENT.send("TOOLS" + "," + "SCAN_PORT" + "," + ip + "," + min_port + "," + max_port)
+										NAME_EXPORT = CLIENT.recv()
+										print ("SCAN en cours retrouver votre scan dans le rapport", NAME_EXPORT)
+										break
+									else:
+										print("pas bon")
+										break
+									#TODO AFFICHE LES PORT
+
+
+							elif optionTOOLS == "2":
+								NAME_EXPORT=input("entrer le nom de votre export")
+								CLIENT.send("TOOLS" + "," + "EXPORT_SCAN" + "," + NAME_EXPORT)
+								while True:
+									P = CLIENT.recv()
+									if not P == "end":
+										print(P)
+									else:
+										break
+							elif optionTOOLS == "0":
+								break
+							else:
+								print("pas bon")
+							
+							break
+
 
 					elif option2 == "6":
 						CLIENT.send("STOP_SERVER")

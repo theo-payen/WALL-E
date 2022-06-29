@@ -194,12 +194,27 @@ class Serveur():
 					# TODO: a faire						
 					TOOLS = MESSAGE_FROM_CLIENT[1]
 					if TOOLS == "Brute force":
-						pass
-					elif TOOLS == "Brute force dico":
-						pass
-					elif TOOLS == "scan port":
-						pass
 						continue
+					elif TOOLS == "Brute force dico":
+						continue
+					elif TOOLS == "SCAN_PORT":
+						ip = MESSAGE_FROM_CLIENT[2]
+						port_min = MESSAGE_FROM_CLIENT[3]
+						port_max = MESSAGE_FROM_CLIENT[4]
+						self.send(str(self.TOOLS.ScanPorts(ip,port_min,port_max)))
+						continue
+					elif TOOLS == "EXPORT_SCAN":
+						file = MESSAGE_FROM_CLIENT[2]
+						try:
+							open_file = open(file, "r")
+							for line in open_file:
+								self.send(line)
+						except:
+							print("error")
+						else:
+							self.send("end")
+							open_file.close()
+							continue
 				elif ACTION == "STOP_SERVER":
 					self.close()
 					self.closeServer()
@@ -215,7 +230,6 @@ class Serveur():
 				#TODO A METTRE TOUTE LA PARTIE FTP VERS LE CLIENT
 				# TODO: viré tous
 			elif ACTION == "FTP_CLIENT" or ACTION == "BACKUP":
-				print ("test")
 				if self.ROLE == "1":
 					# ADMIN
 					SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]

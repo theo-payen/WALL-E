@@ -226,9 +226,6 @@ class Serveur():
 				ACTION2 = MESSAGE_FROM_CLIENT[1]
 				self.SQL.Update_PASSWORD(ACTION2,self.ID)
 
-				#FIXME:
-				#TODO A METTRE TOUTE LA PARTIE FTP VERS LE CLIENT
-				# TODO: viré tous
 			elif ACTION == "FTP_CLIENT" or ACTION == "BACKUP":
 				if self.ROLE == "1":
 					# ADMIN
@@ -258,7 +255,8 @@ class Serveur():
 
 					elif self.SITE == "STRASBOURG":
 						self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
-
+				if ACTION == "BACKUP":
+					pass
 			elif ACTION == "CLOSE_CLIENT":
 				self.logging.info("STOP CLIENT")
 				self.close()

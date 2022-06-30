@@ -23,7 +23,6 @@ class FTP():
 		file.close() # on ferme le fichier
 
 	def dir(self):
-		#TODO: a tester
 		data = []
 		self.CONNECT.dir(data.append) # on récupère le listing
 		return data

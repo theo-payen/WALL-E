@@ -14,14 +14,10 @@ class FTP():
 			return ftplib.FTP(IP,USER,PASSWORD)
 		except(ftplib.error_temp):
 			print("Erreur impossible de joindre le serveur FTP")
-	def upload (self,file) :
-		open_f = open(file, 'rb')
-		self.CONNECT.storbinary(f'STOR {file}', open_f)
-		open_f.close()
 
 	def upload_file(self,fichier):
-		open_f = open(file, 'rb')
-		self.CONNECT.storbinary(f'STOR {file}', open_f)
+		open_f = open(fichier, 'rb')
+		self.CONNECT.storbinary(f'STOR {fichier}', open_f)
 		open_f.close()
 
 	def dowload_file(self,fichier):
@@ -240,7 +236,6 @@ while True:
 						CLIENT.send("DELET_USER" + "," + Del_ID)
 
 					elif option2 == "5":
-						# TODO A FAIRE
 						while True:
 							print("Choisir le site sur le quelle vous voulez vous connecter")
 							print("[1]     .scan port")
@@ -269,8 +264,6 @@ while True:
 									else:
 										print("pas bon")
 										break
-									#TODO AFFICHE LES PORT
-
 
 							elif optionTOOLS == "2":
 								NAME_EXPORT=input("entrer le nom de votre export")
@@ -443,21 +436,17 @@ while True:
 			BACKUP_SERVER = FTP(BACKUP_IP,BACKUP_LOGIN,BACKUP_PASSWORD)
 			folder_backup = "BACKUP/" + BACKUP_LOGIN + "/" 
 			while True:
-
-				print("[1]		.afficher les fichier")
-				print("[2]		.afficher les backup")
-				print("[3]		.backup les fichier")
-				print("[4]		.supprimé une backup")
+				print("[1]		.afficher les backup")
+				print("[2]		.backup les fichier du server ftp")
+				print("[3]		.supprimé une backup")
 				print("[0]		.quitter")
 				option_BACKUP=input("?")
 
 				if option_BACKUP == "1":
-					BACKUP_SERVER.dir()
-
+					dir = os.listdir(folder_backup)
+					for i in dir:
+						print (i)
 				elif option_BACKUP == "2":
-					print (os.listdir(folder_backup))
-
-				elif option_BACKUP == "3":
 					date = f'{datetime.now():%m_%d_%Y-%H_%M_%S}'
 
 					folder = folder_backup + date + "/"
@@ -469,7 +458,7 @@ while True:
 					shutil.make_archive(folder, 'zip', folder)
 					shutil.rmtree(folder)
 
-				elif option_BACKUP == "4":
+				elif option_BACKUP == "3":
 					print("nom du dossierra supprimé")
 					shutil.rmtree(folder)
 				elif option_BACKUP == "0":

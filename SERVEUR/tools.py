@@ -94,9 +94,9 @@ if __name__ == '__main__':
 	# LES TESTS
 	#
 	boite_a_outils = TOOLS()
-	IP = "172.20.20.1"
-	boite_a_outils.ScanPorts(IP,"1","600")
+	IP = "172.20.20.35"
 
+	boite_a_outils.BruteForce_dico(IP,)
 	#boite_a_outils.BruteForce(IP,0)
 
 	"""

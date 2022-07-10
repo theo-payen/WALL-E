@@ -115,7 +115,7 @@ while True :
 		if i == 3 :
 			print("Nombre de tentatives max atteint")
 			sys.exit()
-	elif STATUS_CONNECTION == ("Appouvé"):
+	elif STATUS_CONNECTION == ("APPROUVE"):
 		LOGIN = MESSAGE_CONNECTION[1]
 		ROLE = MESSAGE_CONNECTION[2]
 		NOM = MESSAGE_CONNECTION[3]

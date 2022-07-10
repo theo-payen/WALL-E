@@ -34,6 +34,10 @@ class FTP():
 		self.CONNECT.mkd(folder)
 	def rmd(self,folder):
 		self.CONNECT.rmd(folder)
+	def nlst(self):
+		return self.CONNECT.nlst()
+	def retrbinary(self,file,file2):
+		self.CONNECT.retrbinary(file,file2)
 	def exit(self):
 		self.CONNECT.quit()
 

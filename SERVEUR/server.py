@@ -4,8 +4,8 @@ from sql import SQL
 from tools import TOOLS
 from logging import Logging
 from ftp import FTP
-import socket, sys
-
+import socket, sys, shutil, os
+from datetime import datetime
 # TODO FAIRE LES LOG !!!!
 class Serveur():
 	def __init__(self,IP,PORT,DATA_BASE):
@@ -232,7 +232,7 @@ class Serveur():
 				ACTION2 = MESSAGE_FROM_CLIENT[1]
 				self.SQL.Update_PASSWORD(ACTION2,self.ID)
 
-			elif ACTION == "FTP_CLIENT" or ACTION == "BACKUP":
+			elif ACTION == "FTP_CLIENT":
 				if self.ROLE == "1":
 					# ADMIN
 					SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
@@ -261,8 +261,75 @@ class Serveur():
 
 					elif self.SITE == "STRASBOURG":
 						self.send(self.FTP_IP_STRASBOURG + "," + self.FTP_LOGIN_STRASBOURG + "," + self.FTP_PASSWORD_STRASBOURG)
-				if ACTION == "BACKUP":
-					pass
+
+			elif ACTION == "BACKUP":
+				if self.ROLE == "1":
+					SITE_FOR_ADMIN = MESSAGE_FROM_CLIENT[1]
+					if SITE_FOR_ADMIN == "SIEGE":
+						BACKUP_LOGIN = self.FTP_LOGIN_SIEGE
+						BACKUP_SERVER = FTP(self.FTP_IP_SIEGE,self.FTP_LOGIN_SIEGE,self.FTP_PASSWORD_SIEGE)
+
+					elif SITE_FOR_ADMIN == "GRENOBLE":
+						BACKUP_LOGIN = self.FTP_LOGIN_GRENOBLE
+						BACKUP_SERVER = FTP(self.FTP_IP_GRENOBLE,self.FTP_LOGIN_GRENOBLE,self.FTP_PASSWORD_GRENOBLE)
+
+					elif SITE_FOR_ADMIN == "RENNES":
+						BACKUP_LOGIN = self.FTP_LOGIN_RENNES
+						BACKUP_SERVER = FTP(self.FTP_IP_RENNES,self.FTP_LOGIN_RENNES,self.FTP_PASSWORD_RENNES)
+
+					elif SITE_FOR_ADMIN == "STRASBOURG":
+						BACKUP_LOGIN = self.FTP_LOGIN_STRASBOURG
+						BACKUP_SERVER = FTP(self.FTP_IP_STRASBOURG,self.FTP_LOGIN_STRASBOURG,self.FTP_PASSWORD_STRASBOURG)
+
+				else:
+						# NO ADMIN
+					if self.SITE == "SIEGE":
+						BACKUP_LOGIN = self.FTP_LOGIN_SIEGE
+						BACKUP_SERVER = FTP(self.FTP_IP_SIEGE,self.FTP_LOGIN_SIEGE,self.FTP_PASSWORD_SIEGE)
+					elif self.SITE == "GRENOBLE":
+						BACKUP_LOGIN = self.FTP_LOGIN_GRENOBLE
+						BACKUP_SERVER = FTP(self.FTP_IP_GRENOBLE,self.FTP_LOGIN_GRENOBLE,self.FTP_PASSWORD_GRENOBLE)
+					elif self.SITE == "RENNES":
+						BACKUP_LOGIN = self.FTP_LOGIN_RENNES
+						BACKUP_SERVER = FTP(self.FTP_IP_RENNES,self.FTP_LOGIN_RENNES,self.FTP_PASSWORD_RENNES)
+					elif self.SITE == "STRASBOURG":
+						BACKUP_LOGIN = self.FTP_LOGIN_STRASBOURG
+						BACKUP_SERVER = FTP(self.FTP_IP_STRASBOURG,self.FTP_LOGIN_STRASBOURG,self.FTP_PASSWORD_STRASBOURG)
+
+
+				folder_backup = "BACKUP/" + BACKUP_LOGIN + "/" 
+				while True:
+					BACKUP_RECV = self.recv().split(",")
+					BACKUP_ACTION = BACKUP_RECV[0]
+					if BACKUP_ACTION == "LIST_BACKUP":
+						dir = os.listdir(folder_backup)
+						for i in dir:
+							self.send(str(i))
+							self.recv()
+						self.send("List_BACKUP_END")
+
+					elif BACKUP_ACTION == "BACKUP_FILE":
+						date = f'{datetime.now():%m_%d_%Y-%H_%M_%S}'
+
+						folder = folder_backup + date + "/"
+						os.makedirs(folder)
+						files = BACKUP_SERVER.nlst()
+						for file in files:
+							BACKUP_SERVER.retrbinary("RETR " + file ,open(folder + file, 'wb').write)
+
+						shutil.make_archive(folder, 'zip', folder)
+						shutil.rmtree(folder)
+						
+					elif BACKUP_ACTION == "DEL_BACKUP":
+						BACKUP_folder = BACKUP_RECV[1]
+						shutil.rmtree(folder_backup+BACKUP_folder)
+					elif BACKUP_ACTION == "BACKUP_exit":
+						break
+
+
+				BACKUP_SERVER.exit()
+
+
 			elif ACTION == "CLOSE_CLIENT":
 				self.logging.info("STOP CLIENT")
 				self.close()

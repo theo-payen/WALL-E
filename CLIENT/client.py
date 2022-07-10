@@ -1,5 +1,5 @@
-import socket , hashlib , os, re, sys, ftplib, shutil
-from datetime import datetime
+import socket , hashlib , os, re, sys, ftplib
+
 # TODO : TRIE LES IMPORT NON UTILISE
 
 class FTP():
@@ -445,13 +445,6 @@ while True:
 				CLIENT.send("BACKUP")
 
 
-			BACKUP_INFO_CONNECTION = CLIENT.recv().split(",")
-			BACKUP_IP = BACKUP_INFO_CONNECTION[0]
-			BACKUP_LOGIN = BACKUP_INFO_CONNECTION[1]
-			BACKUP_PASSWORD = BACKUP_INFO_CONNECTION[2]
-
-			BACKUP_SERVER = FTP(BACKUP_IP,BACKUP_LOGIN,BACKUP_PASSWORD)
-			folder_backup = "BACKUP/" + BACKUP_LOGIN + "/" 
 			while True:
 				print("[1]		.afficher les backup")
 				print("[2]		.backup les fichier du server ftp")
@@ -460,26 +453,22 @@ while True:
 				option_BACKUP=input("?")
 
 				if option_BACKUP == "1":
-					dir = os.listdir(folder_backup)
-					for i in dir:
-						print (i)
+					CLIENT.send("LIST_BACKUP")
+					while True:
+						Reponse_List_BACKUP = CLIENT.recv()
+						if Reponse_List_BACKUP == "List_BACKUP_END":
+							break
+						CLIENT.send("OK")
+						print (Reponse_List_BACKUP)
+
 				elif option_BACKUP == "2":
-					date = f'{datetime.now():%m_%d_%Y-%H_%M_%S}'
-
-					folder = folder_backup + date + "/"
-					os.makedirs(folder)
-					files = BACKUP_SERVER.nlst()
-					for file in files:
-						BACKUP_SERVER.retrbinary("RETR " + file ,open(folder + file, 'wb').write)
-
-					shutil.make_archive(folder, 'zip', folder)
-					shutil.rmtree(folder)
+					CLIENT.send("BACKUP_FILE")
 
 				elif option_BACKUP == "3":
-					print("nom du dossierra supprimé")
-					shutil.rmtree(folder)
+					folder = input("le dossier a supprimer:")
+					CLIENT.send("DEL_BACKUP"+ "," + folder)
 				elif option_BACKUP == "0":
-					BACKUP_SERVER.exit()
+					CLIENT.send("BACKUP_exit")
 					break
 				else:
 					print("pas bon")

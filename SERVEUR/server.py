@@ -118,14 +118,14 @@ class Serveur():
 			self.logging.warning("ERREUR_DE_CONNEXION")
 		try:
 			if self.RECV_LOGIN is None or self.RECV_PASSWORD is None or not self.RECV_LOGIN in self.LOGIN or not self.RECV_PASSWORD in self.PASSWORD:
-				self.send("ERREUR_DE_CONNEXION")
+				self.send("ERROR_CONNECTION")
 				self.logging.warning("Connexion refusée pour " + self.LOGIN)
 				self.close()
 			else:
 				self.send("APPROUVE" + "," + self.LOGIN + "," + self.ROLE + "," + self.NOM + "," +self.PRENOM + "," + self.SITE)
 				self.logging.info("Connexion approuvée pour " + self.LOGIN)
 		except:
-			self.send("ERREUR DE CONNEXION")
+			self.send("ERROR_CONNECTION")
 			self.logging.warning("Connexion refusée pour " + self.LOGIN)
 			self.close()
 

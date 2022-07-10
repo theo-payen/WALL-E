@@ -14,11 +14,7 @@ class TOOLS():
 		self.logging = Logging(self.FILE_LOG)
 		pass
 
-	#TODO :a voir
-	def TestConnection (self,IP):
-		pass
 
-	#TODO : sur le ftp
 	def BruteForce_nodico (self,ip,user):
 
 		def BruteForce_pwd(ip,user,FILE,pwd):
@@ -50,7 +46,6 @@ class TOOLS():
 
 		DATE = f'{datetime.now():%m-%d-%Y-%H-%M-%S}'
 		FILE = "TOOLS/"+"BRUTE_FORCE"+DATE
-
 
 		threading.Thread(target=BruteForce_thread, args=(ip,user,FILE)).start()
 

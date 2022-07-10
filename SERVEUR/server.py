@@ -190,12 +190,18 @@ class Serveur():
 					self.SQL.Del_User(ID_DELET)
 					continue
 
-				elif ACTION == "TOOLS":
-					# TODO: a faire						
+				elif ACTION == "TOOLS":					
 					TOOLS = MESSAGE_FROM_CLIENT[1]
-					if TOOLS == "Brute force":
+					if TOOLS == "BRUTE_FORCE":
+						ip = MESSAGE_FROM_CLIENT[2]
+						user = MESSAGE_FROM_CLIENT[3]
+						self.send(str(self.TOOLS.BruteForce_nodico(ip,user)))
 						continue
-					elif TOOLS == "Brute force dico":
+					elif TOOLS == "BRUTE_FORCE_DICO":
+						ip = MESSAGE_FROM_CLIENT[2]
+						user = MESSAGE_FROM_CLIENT[3]
+						file = MESSAGE_FROM_CLIENT[4]
+						self.send(str(self.TOOLS.BruteForce_dico(ip,user,file)))
 						continue
 					elif TOOLS == "SCAN_PORT":
 						ip = MESSAGE_FROM_CLIENT[2]

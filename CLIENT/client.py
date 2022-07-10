@@ -237,9 +237,11 @@ while True:
 
 					elif option2 == "5":
 						while True:
-							print("Choisir le site sur le quelle vous voulez vous connecter")
+							print("Choisir votre outils")
 							print("[1]     .scan port")
 							print("[2]     .Voir mes scan")
+							print("[3]     .brut force")
+							print("[3]     .brut force avec dico")
 							print("[0]     .quitter")
 							optionTOOLS=input("?")
 							if optionTOOLS == "1":
@@ -260,6 +262,21 @@ while True:
 										CLIENT.send("TOOLS" + "," + "SCAN_PORT" + "," + ip + "," + min_port + "," + max_port)
 										NAME_EXPORT = CLIENT.recv()
 										print ("SCAN en cours retrouver votre scan dans le rapport", NAME_EXPORT)
+										break
+									elif optionSCAN == "3":
+										user = input("le user a forcer")
+										ip = input("le ip a forcer")
+										CLIENT.send("TOOLS" + "," + "BRUTE_FORCE" + "," + ip + "," + user)
+										NAME_EXPORT = CLIENT.recv()
+										print ("le brutforce est en cours retrouver votre scan dans le rapport si le repport est introvable alors l'attaque n'est pas fini ou alors n'a pas trouver le mdp\n", NAME_EXPORT)
+										break
+									elif optionSCAN == "4":
+										user = input("le user a forcer")
+										ip = input("le ip a forcer")
+										fichier = input("votre dico")
+										CLIENT.send("TOOLS" + "," + "BRUTE_FORCE_DICO" + "," + ip + "," + user + "," + fichier)
+										NAME_EXPORT = CLIENT.recv()
+										print ("le brutforce est en cours retrouver votre scan dans le rapport si le repport est introvable alors l'attaque n'est pas fini ou alors n'a pas trouver le mdp\n", NAME_EXPORT)
 										break
 									else:
 										print("pas bon")

@@ -49,16 +49,16 @@ class Serveur():
 			self.server.bind((self.IP, self.PORT))
 			self.server.listen(5)
 		except:
-			self.logging.error("Impossible de démmaré le serveur")
+			self.logging.error("Impossible de démarrer le serveur")
 			sys.exit()
 		else:
-			self.logging.info("Serveur start")
+			self.logging.info("Serveur démarré")
 
 	def accept(self):
 		try:
 			self.client,self.infosClient = self.server.accept()
 		except:
-			self.logging.error("Impossible detablire la connexion avec le client")
+			self.logging.error("Impossible d'établir la connexion avec le client")
 			sys.exit()
 		else:
 			self.ID_client = self.ID_client + 1
@@ -67,21 +67,13 @@ class Serveur():
 
 	def closeServer(self):
 		self.server.close()
-	"""
-	non prioritaire a voir
-	def All_users(self,msg):
-		for socket in self.infosocket["SOCKET"]:
-			try:
-				socket.send((msg).encode())
-			except:
-				self.logging.error("impossible envoyer le message")
-	"""
+
 	def recv(self):
 		try:
 			rep = self.client.recv(255)
 			return rep.decode()
 		except:
-			self.logging.error("impossible de resevoir le message")
+			self.logging.error("Impossible de recevoir le message")
 			self.close()
 
 	def send(self,msg):
@@ -89,20 +81,20 @@ class Serveur():
 			msg = msg.encode()
 			self.client.send(msg)
 		except : 
-			self.logging.error("impossible d'envoyer un message")
+			self.logging.error("Impossible d'envoyer un message")
 			self.close()
 
 	def close(self):
 		try:
 			self.client.close()
 		except:
-			self.logging.error("Impossible de fermer la connection avec le client")
+			self.logging.error("Impossible de fermer la connexion avec le client")
 			sys.exit()
 
 	def Instruction(self,client, infosClient, server):   
 		adresseIP = infosClient[0]
 		port = str(infosClient[1])
-		self.logging.info("START threadsClients for " + adresseIP + " : " +str(port))
+		self.logging.info("Démarrage des threads pour le client" + adresseIP + " : " +str(port))
 
 		MESSAGE = self.recv().split(",")
 		self.RECV_LOGIN = MESSAGE[0]
@@ -123,18 +115,18 @@ class Serveur():
 			self.PRENOM = self.DATA_USER[5]
 			self.SITE = self.DATA_USER[6]
 		except:
-			print("erreur conection")
+			self.logging.warning("ERREUR_DE_CONNEXION")
 		try:
 			if self.RECV_LOGIN is None or self.RECV_PASSWORD is None or not self.RECV_LOGIN in self.LOGIN or not self.RECV_PASSWORD in self.PASSWORD:
-				self.send("ERROR_CONNECTION")
-				self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
+				self.send("ERREUR_DE_CONNEXION")
+				self.logging.warning("Connexion refusée pour " + self.LOGIN)
 				self.close()
 			else:
 				self.send("APPROUVE" + "," + self.LOGIN + "," + self.ROLE + "," + self.NOM + "," +self.PRENOM + "," + self.SITE)
-				self.logging.info("CONNECTION APPROUVE FOR " + self.LOGIN)
+				self.logging.info("Connexion approuvée pour " + self.LOGIN)
 		except:
-			self.send("ERROR_CONNECTION")
-			self.logging.warning("CONNECTION REFUSE FOR " + self.LOGIN)
+			self.send("ERREUR DE CONNEXION")
+			self.logging.warning("Connexion refusée pour " + self.LOGIN)
 			self.close()
 
 		while True:
@@ -167,9 +159,9 @@ class Serveur():
 						VALUE = MESSAGE_FROM_CLIENT[2]
 						ID_UPDATE = MESSAGE_FROM_CLIENT[3]
 					except:
-						print("error")
+						self.logging.warning("error EDIT_USER")
 
-					print(ACTION2,ID_UPDATE,VALUE)
+					self.logging.info(ACTION2+","+ID_UPDATE+","+VALUE)
 					if ACTION2 == "CHANGE_LOGIN_USER":
 						self.SQL.Update_LOGIN(VALUE,ID_UPDATE)
 					elif ACTION2 == "CHANGE_PASSWORD_USER":
@@ -216,12 +208,13 @@ class Serveur():
 							for line in open_file:
 								self.send(line)
 						except:
-							print("error")
+							self.logging.warning("ERROR SCAN:")
 						else:
 							self.send("end")
 							open_file.close()
 							continue
 				elif ACTION == "STOP_SERVER":
+					self.logging.info("close serveur")
 					self.close()
 					self.closeServer()
 					sys.exit()
@@ -335,21 +328,12 @@ class Serveur():
 				self.close()
 				break
 			else:
-				print(ACTION,"ERROR")
+				self.logging.warning(ACTION+"ERROR l'action existe pas")
 				self.close()
 				break
-					
-			# FIN BLOUCLE INFINI
-				"""
-					if ACTION == "SERVEUR MAINTENANCE":
-						self.logging.critical("SERVEUR MAINTENANCE")
-						self.All_users("SERVER MAINTENANCE")
-						self.logging.critical("STOP SERVEUR")
-						self.closeServer()
-						break
-				"""
+
 
 if __name__ == '__main__':
-	print ("veillez importer le script")
+	print ("Veuillez importer le script")
 else:
-	print ("Le script Serveur a été importer avec succès")
+	print ("Le script serveur a été importé avec succès")

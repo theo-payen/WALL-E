@@ -53,7 +53,7 @@ class TOOLS():
 
 
 
-	def BruteForce_dico (self,ip,file,user):
+	def BruteForce_dico (self,ip,user,file):
 		def BruteForce(ip,user,pwd,FILE):
 			try:
 				ftplib.FTP(ip,user,pwd)

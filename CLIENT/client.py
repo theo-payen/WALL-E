@@ -241,7 +241,7 @@ while True:
 							print("[1]     .scan port")
 							print("[2]     .voir mes scans")
 							print("[3]     .bruteforce")
-							print("[3]     .bruteforce avec dico")
+							print("[4]     .bruteforce avec dico")
 							print("[0]     .quitter")
 							optionTOOLS=input("?")
 							if optionTOOLS == "1":
@@ -249,6 +249,7 @@ while True:
 									print("Souhaitez-vous scanner un port unique ou une plage de ports ?")
 									print("[1]     .port unique")
 									print("[2]     .plage de ports")
+									print("[0]     .exit")
 									optionSCAN=input("?")
 									ip = input("Entrer l'IP du serveur à scanner:")
 									if optionSCAN == "1":
@@ -256,12 +257,15 @@ while True:
 										CLIENT.send("TOOLS" + "," + "SCAN_PORT" + "," + ip + "," + port + "," + port)
 										NAME_EXPORT = CLIENT.recv()
 										print ("SCAN en cours, un rapport sera généré à la fin de celui-ci", NAME_EXPORT)
+										break
 									elif optionSCAN == "2":
 										min_port = input("Port de début:")
 										max_port = input("Port de fin:")
 										CLIENT.send("TOOLS" + "," + "SCAN_PORT" + "," + ip + "," + min_port + "," + max_port)
 										NAME_EXPORT = CLIENT.recv()
 										print ("SCAN en cours, un rapport sera généré à la fin de celui-ci", NAME_EXPORT)
+										break
+									elif optionSCAN == "0":
 										break
 									else:
 										print("invalide")
@@ -271,10 +275,15 @@ while True:
 								CLIENT.send("TOOLS" + "," + "EXPORT_SCAN" + "," + NAME_EXPORT)
 								while True:
 									P = CLIENT.recv()
-									if not P == "end":
-										print(P)
-									else:
+									if P == "end":
 										break
+									if P == "FILE_NOT_EXIST":
+										print("Le rapport n'est pas disponible, le scan est en cours d'exécution ou aucun port n'est ouvert sur la cible")
+									CLIENT.send("ok")
+									print (P)
+
+
+
 							elif optionTOOLS == "3":
 									user = input("User à forcer:")
 									ip = input("IP à forcer:")
@@ -295,8 +304,6 @@ while True:
 							else:
 								print("invalide")
 							
-
-
 
 					elif option2 == "6":
 						CLIENT.send("STOP_SERVER")
@@ -396,7 +403,7 @@ while True:
 
 				elif optionFTP == "6":
 					upload_file = input("Chemin du fichier:")
-					FTP_SERVER.upload(upload_file)
+					FTP_SERVER.upload_file(upload_file)
 
 				elif optionFTP == "7":
 					print("download file")

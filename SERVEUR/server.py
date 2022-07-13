@@ -207,8 +207,10 @@ class Serveur():
 							open_file = open(file, "r")
 							for line in open_file:
 								self.send(line)
+								self.recv()
 						except:
 							self.logging.warning("ERROR SCAN:")
+							self.send("FILE_NOT_EXIST")
 						else:
 							self.send("end")
 							open_file.close()
